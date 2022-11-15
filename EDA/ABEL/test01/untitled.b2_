@@ -1,0 +1,1 @@
+ -collapse fmax -pterms 16 -plimit 80 -nmax 24 -nfanlimit 28 -clust 5 -areamax 64 -delaymax 1 -effort 2 -reduce bypin choose -xorsyn

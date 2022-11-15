@@ -1,0 +1,11 @@
+[NameRules]
+InstanceSeparator=^
+
+[Waves]
+Count=6
+Net0=A
+Net1=B
+Net2=C
+Net3=D
+Net4=E
+Net5=F

@@ -1,0 +1,20 @@
+Fitter Status : Successful - Fri Oct 14 22:05:16 2022
+Quartus II 64-Bit Version : 13.1.0 Build 162 10/23/2013 SJ Full Version
+Revision Name : Jiaotong_Lights
+Top-level Entity Name : Jiaotong_Lights
+Family : Cyclone IV GX
+Device : EP4CGX15BF14C6
+Timing Models : Final
+Total logic elements : 4,341 / 14,400 ( 30 % )
+    Total combinational functions : 4,341 / 14,400 ( 30 % )
+    Dedicated logic registers : 7 / 14,400 ( < 1 % )
+Total registers : 7
+Total pins : 31 / 81 ( 38 % )
+Total virtual pins : 0
+Total memory bits : 0 / 552,960 ( 0 % )
+Embedded Multiplier 9-bit elements : 0
+Total GXB Receiver Channel PCS : 0 / 2 ( 0 % )
+Total GXB Receiver Channel PMA : 0 / 2 ( 0 % )
+Total GXB Transmitter Channel PCS : 0 / 2 ( 0 % )
+Total GXB Transmitter Channel PMA : 0 / 2 ( 0 % )
+Total PLLs : 0 / 3 ( 0 % )

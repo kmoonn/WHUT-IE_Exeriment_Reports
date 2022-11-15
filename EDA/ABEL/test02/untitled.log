@@ -1,0 +1,8 @@
+Prefit Logic Optimizer (Jun 25 2002)  Fri Sep 23 20:26:57 2022
+
+D:\ispTOOLS\ispcpld\bin\prefit.exe -blif -inp untitled.bl4 -out untitled.bl5 -err automake.err -log untitled.log -mod mult @untitled.l0 -gui -sc 
+Number of pins (IO)    :    16
+Number of outputs (MC) :     8
+Number of registers    :     0
+Number of logic pterms :   118
+D:\ispTOOLS\ispcpld\bin\prefit.exe complete - Time 0 seconds

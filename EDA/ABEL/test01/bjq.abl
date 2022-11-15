@@ -1,0 +1,10 @@
+MODULE BJQ
+
+A,B,C,D,E PIN;
+F PIN ISTYPE 'COM';
+
+EQUATIONS
+F=(A&B&C)#(A&B&D)#(A&B&E)#(A&C&D)#(A&C&E)#(A&D&E)#(B&C&D)#(B&C&E)#(B&D&E)#(C&D&E);
+
+END
+

@@ -1,0 +1,88 @@
+
+[Device]
+Family = lc4k;
+PartNumber = LC4064V-5T44C;
+Package = 44TQFP;
+PartType = LC4064V;
+Speed = -5;
+Operating_condition = COM;
+Status = Production;
+
+[Revision]
+Parent = lc4k64.lci;
+DATE = 09/15/2022;
+TIME = 16:07:16;
+Source_Format = ABEL_Schematic;
+Synthesis = Exemplar;
+
+[Ignore Assignments]
+
+[Clear Assignments]
+
+[Backannotate Assignments]
+
+[Global Constraints]
+
+[Location Assignments]
+layer = OFF;
+F = pin, O, -, -, -;
+E = pin, I5, -, -, -;
+D = pin, I4, -, -, -;
+C = pin, I3, -, -, -;
+B = pin, I2, -, -, -;
+A = pin, I1, -, -, -;
+
+[Group Assignments]
+layer = OFF;
+
+[Resource Reservations]
+layer = OFF;
+
+[Fitter Report Format]
+
+[Power]
+
+[Source Constraint Option]
+
+[Fast Bypass]
+
+[OSM Bypass]
+
+[Input Registers]
+
+[Netlist/Delay Format]
+
+[IO Types]
+layer = OFF;
+
+[Pullup]
+
+[Slewrate]
+
+[Region]
+
+[Timing Constraints]
+
+[HSI Attributes]
+
+[Input Delay]
+
+[global constraints list]
+
+[Global Constraints Process Update]
+
+[Explorer User Settings]
+
+[LOCATION ASSIGNMENTS LIST]
+
+[RESOURCE RESERVATIONS LIST]
+
+[Pin attributes list]
+
+[Timing Analyzer]
+
+[PLL Assignments]
+
+[Register Powerup]
+
+[Explorer Results]

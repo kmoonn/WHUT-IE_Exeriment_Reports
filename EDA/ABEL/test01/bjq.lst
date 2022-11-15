@@ -1,0 +1,9 @@
+0002 |
+0003 |A,B,C,D,E PIN;
+0004 |F PIN ISTYPE 'COM';
+0005 |
+0006 |EQUATIONS
+0007 |F=(A&B&C)#(A&B&D)#(A&B&E)#(A&C&D)#(A&C&E)#(A&D&E)#(B&C&D)#(B&C&E)#(B&D&E)#(C&D&E);
+0008 |
+0009 |END
+0010 |

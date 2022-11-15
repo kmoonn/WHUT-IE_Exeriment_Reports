@@ -1,0 +1,18 @@
+Analysis & Elaboration Status : Successful - Sat Oct 15 11:12:12 2022
+Quartus II 64-Bit Version : 13.1.0 Build 162 10/23/2013 SJ Full Version
+Revision Name : Jiaotong_Lights
+Top-level Entity Name : Jiaotong_Lights
+Family : Cyclone IV GX
+Total logic elements : N/A until Partition Merge
+    Total combinational functions : N/A until Partition Merge
+    Dedicated logic registers : N/A until Partition Merge
+Total registers : N/A until Partition Merge
+Total pins : N/A until Partition Merge
+Total virtual pins : N/A until Partition Merge
+Total memory bits : N/A until Partition Merge
+Embedded Multiplier 9-bit elements : N/A until Partition Merge
+Total GXB Receiver Channel PCS : N/A until Partition Merge
+Total GXB Receiver Channel PMA : N/A until Partition Merge
+Total GXB Transmitter Channel PCS : N/A until Partition Merge
+Total GXB Transmitter Channel PMA : N/A until Partition Merge
+Total PLLs : N/A until Partition Merge

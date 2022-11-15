@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1667315158 source:c:\users\34538\desktop\homework\数据库应用系统开发\ex1\ex01\main.c
+	<stdio.h>
+	<windows.h>
+	<sql.h>
+	<sqlext.h>
+	<sqltypes.h>
+	<string.h>
+
+1667366124 source:c:\users\34538\desktop\homework\数据库实验\ex1\ex01\main.c
+	<stdio.h>
+	<windows.h>
+	<sql.h>
+	<sqlext.h>
+	<sqltypes.h>
+	<string.h>
+

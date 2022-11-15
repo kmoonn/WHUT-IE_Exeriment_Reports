@@ -1,0 +1,34 @@
+# do Jiaotong_Lights.do 
+# ** Warning: (vlib-34) Library already exists at "work".
+# 
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module Jiaotong_Lights
+# 
+# Top level modules:
+# 	Jiaotong_Lights
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module Jiaotong_Lights_vlg_sample_tst
+# -- Compiling module Jiaotong_Lights_vlg_check_tst
+# -- Compiling module Jiaotong_Lights_vlg_vec_tst
+# 
+# Top level modules:
+# 	Jiaotong_Lights_vlg_vec_tst
+# vsim -L cycloneiv_ver -L altera_ver -L altera_mf_ver -L 220model_ver -L sgate -c -voptargs=\"+acc\" -t 1ps -novopt work.Jiaotong_Lights_vlg_vec_tst 
+# Loading work.Jiaotong_Lights_vlg_vec_tst
+# Loading work.Jiaotong_Lights
+# Loading cycloneiv_ver.cycloneiv_io_obuf
+# Loading cycloneiv_ver.cycloneiv_io_ibuf
+# Loading cycloneiv_ver.cycloneiv_lcell_comb
+# Loading altera_ver.dffeas
+# Loading cycloneiv_ver.cycloneiv_clkctrl
+# Loading cycloneiv_ver.cycloneiv_mux41
+# Loading cycloneiv_ver.cycloneiv_ena_reg
+# Loading work.Jiaotong_Lights_vlg_sample_tst
+# Loading work.Jiaotong_Lights_vlg_check_tst
+# Loading altera_ver.PRIM_GDFF_LOW
+# ** Warning: Design size of 4 instances exceeds ModelSim ALTERA recommended capacity.
+# This may because you are loading cell libraries which are not recommended with
+# the ModelSim Altera version. Expect performance to be adversely affected.
+# Simulation passed !
+# ** Note: $finish    : Waveform.vwf.vt(685)
+#    Time: 1 us  Iteration: 0  Instance: /Jiaotong_Lights_vlg_vec_tst/tb_out

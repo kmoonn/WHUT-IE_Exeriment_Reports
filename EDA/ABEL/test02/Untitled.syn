@@ -1,0 +1,12 @@
+JDF B
+// Created by Version 3.0 
+PROJECT test02
+DESIGN untitled Normal
+DEVKIT ispLSI5256VE-165LF256
+ENTRY ABEL/Schematic
+STIMULUS mult.abv
+MODULE mult.sch
+MODSTYLE mult Normal
+MODULE m.abl
+MODSTYLE M Normal
+SYNTHESIS_TOOL Exemplar

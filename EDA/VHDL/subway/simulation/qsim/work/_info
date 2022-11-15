@@ -1,0 +1,81 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\34538\Desktop\HomeWork\EDA\VHDL\subway\simulation\qsim
+vsubway
+Z1 !s100 YFeRP9[98>iONdM=1i;8C1
+Z2 InJZVLK04BG`0UmkAOGh=j1
+Z3 VOSlQ0mmI5;b_HYGY2YTD`3
+Z4 dC:\Users\34538\Desktop\HomeWork\EDA\VHDL\subway\simulation\qsim
+Z5 w1668093069
+Z6 8subway.vo
+Z7 Fsubway.vo
+L0 31
+Z8 OV;L;10.1d;51
+r1
+31
+Z9 !s90 -work|work|subway.vo|
+Z10 o-work work -O0
+!i10b 1
+!s85 0
+Z11 !s108 1668093070.486000
+Z12 !s107 subway.vo|
+!s101 -O0
+vsubway_vlg_check_tst
+!i10b 1
+Z13 !s100 TWRdKJ_4Qzoz71]81FRKd3
+Z14 I87GazGFI]_540;=1A2efR3
+Z15 V1Bc`_5W2cT^AoZ4eZjc6X1
+R4
+Z16 w1668093068
+Z17 8Waveform.vwf.vt
+Z18 FWaveform.vwf.vt
+L0 69
+R8
+r1
+!s85 0
+31
+Z19 !s108 1668093070.583000
+Z20 !s107 Waveform.vwf.vt|
+Z21 !s90 -work|work|Waveform.vwf.vt|
+!s101 -O0
+R10
+vsubway_vlg_sample_tst
+!i10b 1
+Z22 !s100 HX]]G4R5E_>I?Q8He8CBB0
+Z23 Ib8I=jRoZU@ifC90;Ef5g73
+Z24 VYRfDC_4^K0ffIaA>Bz:F@0
+R4
+R16
+R17
+R18
+L0 29
+R8
+r1
+!s85 0
+31
+R19
+R20
+R21
+!s101 -O0
+R10
+vsubway_vlg_vec_tst
+!i10b 1
+!s100 >1Vm?`>LJJ9U3g@;_[UD20
+IS2Q]50PJ_eH@@9zFalY_[1
+Z25 VU4Qc_z0bgB1@DidGfS7Ca0
+R4
+R16
+R17
+R18
+Z26 L0 351
+R8
+r1
+!s85 0
+31
+R19
+R20
+R21
+!s101 -O0
+R10

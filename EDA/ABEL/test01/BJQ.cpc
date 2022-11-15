@@ -1,0 +1,26 @@
+;C:\Users\34538\Desktop\HomeWork\电子线路EDA\HUSHAN\test01\BJQ.cpc - Setup Data for Simulation
+
+
+[NameRules]
+Language=VHDL
+LeadingInstancePrefix=No
+InstanceSeparator=^
+BusParentheses=[:]
+
+[Controls]
+Mode=Maximum
+
+[Controls1]
+Mode=Transport
+TickSize=100
+StepSize=1000
+
+[BreakPoints]
+
+[Monitors]
+
+[Output]
+Interval=OnChange
+Step=10
+
+[OutputNets]

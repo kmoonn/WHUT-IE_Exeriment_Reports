@@ -1,0 +1,35 @@
+LIBRARY IEEE;
+USE IEEE.std_logic_1164.ALL;
+USE IEEE.std_logic_arith.ALL;
+USE IEEE.std_logic_unsigned.ALL;
+
+coin:in std_logic_vector(1 downto 0);
+entity subway is
+port(
+	clk:in std_logic;
+	select_start:in std_logic;
+	insert_start:in std_logic;
+	note:in std_logic_vector(3:0);
+	cancel:in std_logic;
+	ticket_stop:in std_logic_vector(3 downto 0);
+	ticket_account:in std_logic_vector(1 downto 0);
+	money_gate:out std_logic_vector(1 downto 0);
+	ticket_out:out std_logic_vector(4 downto 0);
+	ticket_gate:out std_logic;
+	change_gate:out std_logic;
+);
+end subway;
+
+case note is
+	when "0001"=>
+		total_insert:=total_insert+"00001010";
+	when "0010"=>
+		total_insert:=total_insert+"00110010";
+	when "0100"=>
+		total_insert:=total_insert+"00110010";
+	when "1000"=>
+		total_insert:=total_insert+"01100100";
+	when others=>
+		null;
+end case;
+	

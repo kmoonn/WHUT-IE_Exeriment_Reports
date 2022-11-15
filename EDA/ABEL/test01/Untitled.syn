@@ -1,0 +1,12 @@
+JDF B
+// Created by Version 3.0 
+PROJECT test01
+DESIGN untitled Normal
+DEVKIT LC4064V-5T44C
+ENTRY ABEL/Schematic
+STIMULUS bjq.abv
+MODULE test01.sch
+MODSTYLE test01 Normal
+MODULE bjq.abl
+MODSTYLE BJQ Normal
+SYNTHESIS_TOOL Exemplar

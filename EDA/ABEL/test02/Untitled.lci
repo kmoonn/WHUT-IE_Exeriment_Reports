@@ -1,0 +1,82 @@
+
+[Device]
+Family = LC5KVE;
+PartNumber = ispLSI5256VE-165LF256;
+Package = 256fpBGA;
+PartType = ispLSI5256VE;
+Speed = -165;
+Operating_condition = COM;
+Status = Production;
+
+[Revision]
+Parent = lc5kve256.lci;
+DATE = 2002;
+TIME = 0:00:00;
+Source_Format = ABEL_Schematic;
+Synthesis = Exemplar;
+
+[Ignore Assignments]
+
+[Clear Assignments]
+
+[Backannotate Assignments]
+
+[Global Constraints]
+
+[Location Assignments]
+layer = OFF;
+
+[Group Assignments]
+layer = OFF;
+
+[Resource Reservations]
+layer = OFF;
+
+[Fitter Report Format]
+
+[Power]
+
+[Source Constraint Option]
+
+[Fast Bypass]
+
+[OSM Bypass]
+
+[Input Registers]
+
+[Netlist/Delay Format]
+
+[IO Types]
+layer = OFF;
+
+[Pullup]
+
+[Slewrate]
+
+[Region]
+
+[Timing Constraints]
+
+[HSI Attributes]
+
+[Input Delay]
+
+[global constraints list]
+
+[Global Constraints Process Update]
+
+[Explorer User Settings]
+
+[Pin attributes list]
+
+[LOCATION ASSIGNMENTS LIST]
+
+[RESOURCE RESERVATIONS LIST]
+
+[Timing Analyzer]
+
+[PLL Assignments]
+
+[Dual Function Macrocell]
+
+[Explorer Results]

@@ -1,0 +1,165 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\34538\Desktop\HomeWork\EDA\VHDL\Jiaotong_Lights\simulation\qsim
+vJiaotong_lights
+Z1 !s100 W<[@7Wne_f<e9??UGA`6^3
+Z2 InzJBef>6^?BNCV^AR7TLT1
+Z3 V58AmkLgBa6_LBVdzh5PWT0
+Z4 dC:\Users\34538\Desktop\HomeWork\EDA\VHDL\Jiaotong_Lights\simulation\qsim
+Z5 w1665729815
+Z6 8Jiaotong_Lights.vo
+Z7 FJiaotong_Lights.vo
+L0 31
+Z8 OV;L;10.1d;51
+r1
+31
+Z9 !s90 -work|work|Jiaotong_Lights.vo|
+Z10 o-work work -O0
+Z11 n@jiaotong_lights
+Z12 !s108 1665729816.219000
+Z13 !s107 Jiaotong_Lights.vo|
+!i10b 1
+!s85 0
+!s101 -O0
+vJiaotong_Lights
+Z14 !s100 <V^RIm7VgJ8mfGBd`IQgo1
+Z15 IDOVj;:SH0D][bIYZ?_PHA3
+Z16 V5N]?YCHkBV2iEccL]:7UW0
+Z17 dC:\Users\34538\Desktop\HomeWork\EDA\VHDL\Jiaotong_Lights_Hs\simulation\qsim
+Z18 w1665892572
+R6
+R7
+L0 31
+R8
+r1
+31
+R9
+R10
+Z19 n@jiaotong_@lights
+!i10b 1
+!s85 0
+Z20 !s108 1665892578.510000
+R13
+!s101 -O0
+vJiaotong_Lights_vlg_check_tst
+!i10b 1
+Z21 !s100 id9HUANXWH3l61eQm>e`43
+Z22 I7_XY@UbFL5@438X8]a1cY0
+Z23 V86_iZjT:Z6[BGMb7m7_NR1
+R17
+Z24 w1665892570
+Z25 8Waveform.vwf.vt
+Z26 FWaveform.vwf.vt
+L0 59
+R8
+r1
+!s85 0
+31
+Z27 !s108 1665892578.997000
+Z28 !s107 Waveform.vwf.vt|
+Z29 !s90 -work|work|Waveform.vwf.vt|
+!s101 -O0
+R10
+Z30 n@jiaotong_@lights_vlg_check_tst
+vJiaotong_lights_vlg_check_tst
+Z31 !s100 Z6@;2=d9Wc_::nM06NDZj1
+Z32 ILSiFDYN=SfkMa:]kV2PV?3
+Z33 VKU5Xa:1JHSFl=28WRATE:0
+R4
+Z34 w1665729813
+R25
+R26
+L0 59
+R8
+r1
+31
+Z35 !s108 1665729816.799000
+Z36 !s107 Waveform.vwf.vt|
+R29
+R10
+Z37 n@jiaotong_lights_vlg_check_tst
+!i10b 1
+!s85 0
+!s101 -O0
+vJiaotong_Lights_vlg_sample_tst
+!i10b 1
+Z38 !s100 UWDR@XAR07]6<ZPlVP;gT0
+Z39 Im1GCzCizd3dz?RQ=V2>4G2
+Z40 VMU_V8Fn0PVeeFZFoJg7Q:2
+R17
+R24
+R25
+R26
+L0 29
+R8
+r1
+!s85 0
+31
+R27
+R28
+R29
+!s101 -O0
+R10
+Z41 n@jiaotong_@lights_vlg_sample_tst
+vJiaotong_lights_vlg_sample_tst
+Z42 !s100 1N68HbbOoo=lE]lOc9hCG0
+Z43 IPGZU`ge=eGTcF=X4G:nje0
+Z44 VVmnT1=PjU_J?d@LGIzE6_1
+R4
+R34
+R25
+R26
+L0 29
+R8
+r1
+31
+R35
+R36
+R29
+R10
+Z45 n@jiaotong_lights_vlg_sample_tst
+!i10b 1
+!s85 0
+!s101 -O0
+vJiaotong_Lights_vlg_vec_tst
+!i10b 1
+Z46 !s100 OZ_LW=75^d6@jkMh@;XnW3
+Z47 IF^8Gd5O?=nXd>IfT_CHAC1
+Z48 VX8czHTWKJK:h]zUU[;Uz]0
+R17
+R24
+R25
+R26
+Z49 L0 689
+R8
+r1
+!s85 0
+31
+R27
+R28
+R29
+!s101 -O0
+R10
+Z50 n@jiaotong_@lights_vlg_vec_tst
+vJiaotong_lights_vlg_vec_tst
+Z51 !s100 lbcBn7YGbZFXCAbQF]nBV3
+Z52 IcS_MZ@jl7eNMK3DT^KbZz0
+Z53 VoN0BXIPLQzMTi<5RjB3>E1
+R4
+R34
+R25
+R26
+R49
+R8
+r1
+31
+R35
+R36
+R29
+R10
+Z54 n@jiaotong_lights_vlg_vec_tst
+!i10b 1
+!s85 0
+!s101 -O0

@@ -1,0 +1,18 @@
+#$ TOOL SCH2BLF 3.0.17.51 
+#$ TITLE test01.bls 
+#$ MODULE test01 
+#$ PINS 6  F:O E:I5 D:I4 C:I3 B:I2 A:I1
+#$ NODES 6 N_1 N_2 N_3 N_4 N_5 N_6 
+#$ INTERFACE bjq 6 A'i' B'i' C'i' D'i' E'i' F'o'
+#$ INTERFACE g_input 2 I'i' O'o'
+#$ INTERFACE g_output 2 I'i' O'o'
+#$ INSTANCE I1 bjq 6 N_6 N_5 N_4 N_3 N_2 N_1
+#$ PRIMITIVE I3 g_input 2 E N_2
+#$ PRIMITIVE I4 g_input 2 D N_3
+#$ PRIMITIVE I5 g_input 2 C N_4
+#$ PRIMITIVE I6 g_input 2 B N_5
+#$ PRIMITIVE I7 g_input 2 A N_6
+#$ PRIMITIVE I2 g_output 2 N_1 F
+.model test01
+
+.end

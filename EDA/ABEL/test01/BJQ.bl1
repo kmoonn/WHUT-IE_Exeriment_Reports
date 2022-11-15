@@ -1,0 +1,20 @@
+#$ TOOL ispLEVER 3.0.17.51
+#$ DATE Thu Sep 15 17:30:20 2022
+#$ MODULE bjq
+#$ JEDECFILE bjq
+#$ PINS 6 A B C D E F
+.model BJQ
+.inputs A.BLIF B.BLIF C.BLIF D.BLIF E.BLIF
+.outputs F
+.names A.BLIF B.BLIF C.BLIF D.BLIF E.BLIF F
+111-- 1
+11-1- 1
+1-11- 1
+-111- 1
+11--1 1
+1-1-1 1
+-11-1 1
+1--11 1
+-1-11 1
+--111 1
+.end

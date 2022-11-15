@@ -1,0 +1,11 @@
+#$ TOOL ispLEVER 3.0.17.51
+#$ DATE Fri Sep 23 20:26:46 2022
+#$ TITLE mult.bls 
+#$ MODULE mult
+#$ PINS 16 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0 B3 B2 B1 B0 A3 A2 A1 A0
+#$ INTERFACE m  16 A1'i'  A2'i'  A3'i'  A4'i'  B1'i'  B2'i'  B3'i'  B4'i'  Q1'o'  Q2'o'  Q3'o'  Q4'o'  Q5'o'  Q6'o'  Q7'o'  Q8'o' 
+#$ INSTANCE I1 m 16 A0 A1 A2 A3 B0 B1 B2 B3 Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
+.model MULT
+.inputs
+.outputs
+.end

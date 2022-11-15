@@ -1,0 +1,18 @@
+MODULE BJQ
+
+A,B,C,D,E,F PIN;
+
+X=.X.;
+XIN=[A,B,C,D,E];
+
+TEST_VECTORS
+([XIN]->[F])
+[1]->[X];
+[5]->[X];
+[10]->[X];
+[12]->[X];
+[24]->[X];
+[30]->[X];
+
+END
+

@@ -1,0 +1,38 @@
+#$ TOOL ispLEVER 3.0.17.51
+#$ DATE Thu Sep 15 17:30:20 2022
+#$ TITLE test01.bls 
+#$ MODULE test01
+#$ PINS 6 F:O'o'  E:I5 D:I4 C:I3 B:I2 A:I1
+#$ NODES 6 N_1 N_2'o'  N_3'o'  N_4'o'  N_5'o'  N_6'o' 
+#$ INTERFACE bjq  6 A'i'  B'i'  C'i'  D'i'  E'i'  F'o' 
+#$ INSTANCE I1 bjq 6 N_6 N_5 N_4 N_3 N_2 N_1
+.model TEST01
+.inputs E.BLIF D.BLIF C.BLIF B.BLIF A.BLIF N_1.BLIF
+.outputs N_2 N_3 N_4 N_5 N_6 F
+
+.subckt g_input I.BLIF=E.BLIF O=N_2
+
+.subckt g_input I.BLIF=D.BLIF O=N_3
+
+.subckt g_input I.BLIF=C.BLIF O=N_4
+
+.subckt g_input I.BLIF=B.BLIF O=N_5
+
+.subckt g_input I.BLIF=A.BLIF O=N_6
+
+.subckt g_output I.BLIF=N_1.BLIF O=F
+.end
+.model G_INPUT
+.inputs I.BLIF
+.outputs O
+.names I.BLIF O
+1 1
+0 0
+.end
+.model G_OUTPUT
+.inputs I.BLIF
+.outputs O
+.names I.BLIF O
+1 1
+0 0
+.end
