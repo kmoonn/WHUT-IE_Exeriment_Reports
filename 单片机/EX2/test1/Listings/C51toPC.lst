@@ -1,0 +1,77 @@
+C51 COMPILER V9.59.0.0   C51TOPC                                                           12/01/2022 13:47:41 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE C51TOPC
+OBJECT MODULE PLACED IN .\Objects\C51toPC.obj
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE C51toPC.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.
+                    -\Listings\C51toPC.lst) TABS(2) OBJECT(.\Objects\C51toPC.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2           
+   3          typedef unsigned char uint8;
+   4          typedef unsigned int uint16;
+   5           
+   6          uint8 Buf[]="hello hushan\n";
+   7          
+   8          void delay(uint16 n)
+   9          {
+  10   1        while (n--);
+  11   1      }
+  12           
+  13          /*波特率为9600*/
+  14          void UART_init(void)
+  15          {
+  16   1          SCON = 0x50;        //串口方式1
+  17   1       
+  18   1          TMOD = 0x20;        // 定时器使用方式2自动重载
+  19   1          TH1 = 0xFD;         //9600波特率对应的预设数，定时器方式2下，TH1=TL1
+  20   1          TL1 = 0xFD;
+  21   1       
+  22   1          TR1 = 1;            //开启定时器，开始产生波特率
+  23   1      }
+  24           
+  25          /*发送一个字符*/
+  26          void UART_send_byte(uint8 dat){
+  27   1        SBUF = dat;           //把数据放到SBUF中
+  28   1        while (TI == 0);      //未发送完毕就等待
+  29   1          TI = 0;             //发送完毕后，要把TI重新置0
+  30   1      }
+  31           
+  32          /*发送一个字符串*/
+  33          void UART_send_string(uint8 *buf)
+  34          {
+  35   1        while (*buf != '\0')
+  36   1        {
+  37   2          UART_send_byte(*buf++);
+  38   2        }
+  39   1      }
+  40           
+  41          main()
+  42          {
+  43   1        UART_init();
+  44   1        
+  45   1        while (1)
+  46   1        {
+  47   2          //UART_send_byte('1');
+  48   2          UART_send_string(Buf);
+  49   2          delay(20000);
+  50   2        }
+  51   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V9.59.0.0   C51TOPC                                                           12/01/2022 13:47:41 PAGE 2   
+
+   CODE SIZE        =     92    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     14       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

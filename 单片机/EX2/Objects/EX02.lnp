@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\EX02.obj" 
+TO ".\Objects\EX02" 
+PRINT(".\Listings\EX02.m51") RAMSIZE(256) 

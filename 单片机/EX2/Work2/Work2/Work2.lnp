@@ -1,0 +1,7 @@
+"Uart.obj",
+"STARTUP.obj",
+"main.obj",
+"Lcd1602.obj",
+"keyboard.obj" 
+TO "Work2" 
+RAMSIZE(256) 

@@ -1,0 +1,161 @@
+C51 COMPILER V9.59.0.0   DS1302                                                            12/02/2022 16:26:28 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE DS1302
+OBJECT MODULE PLACED IN .\Objects\DS1302.obj
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE source\DS1302.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND P
+                    -RINT(.\Listings\DS1302.lst) TABS(2) OBJECT(.\Objects\DS1302.obj)
+
+line level    source
+
+   1          /*
+   2          描述：实时时钟芯片DS1302驱动模块
+   3          */
+   4          
+   5          #define  _DS1302_C
+   6          #include "config.h"
+   7          #include "DS1302.h"
+   8          
+   9          /* 发送一个字节到DS1302通信总线上 */
+  10          void DS1302ByteWrite(uint8 dat)
+  11          {
+  12   1          uint8 mask;
+  13   1          
+  14   1          for (mask=0x01; mask!=0; mask<<=1)  //低位在前，逐位移出
+  15   1          {
+  16   2              if ((mask&dat) != 0) //首先输出该位数据
+  17   2                  DS1302_IO = 1;
+  18   2              else
+  19   2                  DS1302_IO = 0;
+  20   2              DS1302_CK = 1;       //然后拉高时钟
+  21   2              DS1302_CK = 0;       //再拉低时钟，完成一个位的操作
+  22   2          }
+  23   1          DS1302_IO = 1;           //最后确保释放IO引脚
+  24   1      }
+  25          /* 由DS1302通信总线上读取一个字节 */
+  26          uint8 DS1302ByteRead()
+  27          {
+  28   1          uint8 mask;
+  29   1          uint8 dat = 0;
+  30   1          
+  31   1          for (mask=0x01; mask!=0; mask<<=1)  //低位在前，逐位读取
+  32   1          {
+  33   2              if (DS1302_IO != 0)  //首先读取此时的IO引脚，并设置dat中的对应位
+  34   2              {
+  35   3                  dat |= mask;
+  36   3              }
+  37   2              DS1302_CK = 1;       //然后拉高时钟
+  38   2              DS1302_CK = 0;       //再拉低时钟，完成一个位的操作
+  39   2          }
+  40   1          return dat;              //最后返回读到的字节数据
+  41   1      }
+  42          /* 用单次写操作向某一寄存器写入一个字节，reg-寄存器地址，dat-待写入字节 */
+  43          void DS1302SingleWrite(uint8 reg, uint8 dat)
+  44          {
+  45   1          DS1302_CE = 1;                   //使能片选信号
+  46   1          DS1302ByteWrite((reg<<1)|0x80);  //发送写寄存器指令
+  47   1          DS1302ByteWrite(dat);            //写入字节数据
+  48   1          DS1302_CE = 0;                   //除能片选信号
+  49   1      }
+  50          /* 用单次读操作从某一寄存器读取一个字节，reg-寄存器地址，返回值-读到的字节 */
+  51          uint8 DS1302SingleRead(uint8 reg)
+  52          {
+  53   1          uint8 dat;
+  54   1          
+C51 COMPILER V9.59.0.0   DS1302                                                            12/02/2022 16:26:28 PAGE 2   
+
+  55   1          DS1302_CE = 1;                   //使能片选信号
+  56   1          DS1302ByteWrite((reg<<1)|0x81);  //发送读寄存器指令
+  57   1          dat = DS1302ByteRead();          //读取字节数据
+  58   1          DS1302_CE = 0;                   //除能片选信号
+  59   1          
+  60   1          return dat;
+  61   1      }
+  62          /* 用突发模式连续写入8个寄存器数据，dat-待写入数据指针 */
+  63          void DS1302BurstWrite(uint8 *dat)
+  64          {
+  65   1          uint8 i;
+  66   1          
+  67   1          DS1302_CE = 1;
+  68   1          DS1302ByteWrite(0xBE);  //发送突发写寄存器指令
+  69   1          for (i=0; i<8; i++)     //连续写入8字节数据
+  70   1          {
+  71   2              DS1302ByteWrite(dat[i]);
+  72   2          }
+  73   1          DS1302_CE = 0;
+  74   1      }
+  75          /* 用突发模式连续读取8个寄存器的数据，dat-读取数据的接收指针 */
+  76          void DS1302BurstRead(uint8 *dat)
+  77          {
+  78   1          uint8 i;
+  79   1          
+  80   1          DS1302_CE = 1;
+  81   1          DS1302ByteWrite(0xBF);  //发送突发读寄存器指令
+  82   1          for (i=0; i<8; i++)     //连续读取8个字节
+  83   1          {
+  84   2              dat[i] = DS1302ByteRead();
+  85   2          }
+  86   1          DS1302_CE = 0;
+  87   1      }
+  88          /* 获取实时时间，即读取DS1302当前时间并转换为时间结构体格式 */
+  89          void GetRealTime(struct sTime *time)
+  90          {
+  91   1          uint8 buf[8];
+  92   1          
+  93   1          DS1302BurstRead(buf);
+  94   1          time->year = buf[6] + 0x2000;
+  95   1          time->mon  = buf[4];
+  96   1          time->day  = buf[3];
+  97   1          time->hour = buf[2];
+  98   1          time->min  = buf[1];
+  99   1          time->sec  = buf[0];
+ 100   1          time->week = buf[5];
+ 101   1      }
+ 102          /* 设定实时时间，时间结构体格式的设定时间转换为数组并写入DS1302 */
+ 103          void SetRealTime(struct sTime *time)
+ 104          {
+ 105   1          uint8 buf[8];
+ 106   1          
+ 107   1          buf[7] = 0;
+ 108   1          buf[6] = time->year;
+ 109   1          buf[5] = time->week;
+ 110   1          buf[4] = time->mon;
+ 111   1          buf[3] = time->day;
+ 112   1          buf[2] = time->hour;
+ 113   1          buf[1] = time->min;
+ 114   1          buf[0] = time->sec;
+ 115   1          DS1302BurstWrite(buf);
+ 116   1      }
+C51 COMPILER V9.59.0.0   DS1302                                                            12/02/2022 16:26:28 PAGE 3   
+
+ 117          /* DS1302初始化，如发生掉电则重新设置初始时间 */
+ 118          void InitDS1302()
+ 119          {
+ 120   1          uint8 dat;
+ 121   1          struct sTime code InitTime[] = {  //默认初始值：2014-01-01 12:30:00 星期3
+ 122   1              0x2014,0x01,0x01, 0x12,0x30,0x00, 0x03
+ 123   1          };
+ 124   1          
+ 125   1          DS1302_CE = 0;  //初始化DS1302通信引脚
+ 126   1          DS1302_CK = 0;
+ 127   1          dat = DS1302SingleRead(0);  //读取秒寄存器
+ 128   1          if ((dat & 0x80) != 0)      //由秒寄存器最高位CH的值判断DS1302是否已停止
+ 129   1          {
+ 130   2              DS1302SingleWrite(7, 0x00);  //撤销写保护以允许写入数据
+ 131   2              SetRealTime(&InitTime);      //设置DS1302为默认的初始时间
+ 132   2          }
+ 133   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    367    ----
+   CONSTANT SIZE    =      8    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      25
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

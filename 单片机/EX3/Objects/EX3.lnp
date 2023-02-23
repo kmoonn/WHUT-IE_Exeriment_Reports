@@ -1,0 +1,6 @@
+".\Objects\STARTUP.obj",
+".\Objects\I2C.obj",
+".\Objects\Lcd1602.obj",
+".\Objects\main.obj" 
+TO ".\Objects\EX3" 
+PRINT(".\Listings\EX3.m51") RAMSIZE(256) 

@@ -1,0 +1,216 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    12/01/2022  13:47:19  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+D:\PROGRAM FILES\KEIL\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\EX02.obj TO .\Objects\EX02 PRINT (.\Listings\EX0
+>> 2.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\STARTUP.obj (?C_STARTUP)
+  .\Objects\EX02.obj (EX02)
+  D:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+  D:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+
+
+LINK MAP OF MODULE:  .\Objects\EX02 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000FH     UNIT         ?DT?EX02
+            DATA    0017H     0003H     UNIT         _DATA_GROUP_
+            IDATA   001AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0019H     UNIT         ?C?LIB_CODE
+                    001CH     0007H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+            CODE    0026H     008CH     UNIT         ?C_C51STARTUP
+            CODE    00B2H     0073H     UNIT         ?PR?SERIAL?EX02
+            CODE    0125H     0025H     UNIT         ?PR?_UART_SEND_STRING?EX02
+            CODE    014AH     0015H     UNIT         ?PR?MAIN?EX02
+            CODE    015FH     0011H     UNIT         ?C_INITSEG
+            CODE    0170H     000FH     UNIT         ?PR?UART_INIT?EX02
+            CODE    017FH     000BH     UNIT         ?PR?_DELAY?EX02
+            CODE    018AH     0008H     UNIT         ?PR?_UART_SEND_BYTE?EX02
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\EX02 (?C_STARTUP)
+
+
+SEGMENT                              DATA_GROUP 
+  +--> CALLED SEGMENT              START    LENGTH
+--------------------------------------------------
+?C_C51STARTUP                      -----    -----
+  +--> ?PR?MAIN?EX02
+  +--> ?C_INITSEG
+
+?PR?MAIN?EX02                      -----    -----
+  +--> ?PR?UART_INIT?EX02
+  +--> ?PR?_UART_SEND_STRING?EX02
+  +--> ?PR?_DELAY?EX02
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/01/2022  13:47:19  PAGE 2
+
+
+?PR?_UART_SEND_STRING?EX02         0017H    0003H
+  +--> ?PR?_UART_SEND_BYTE?EX02
+
+
+
+IGNORED SYMBOLS:
+   BUF
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\EX02 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0026H         SEGMENT       ?C_C51STARTUP
+  I:001AH         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0029H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0026H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0026H         LINE#         133
+  C:0028H         LINE#         134
+  C:0029H         LINE#         135
+  C:002AH         LINE#         136
+  C:002CH         LINE#         185
+  C:002FH         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        EX02
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  C:00B2H         PUBLIC        serial
+  C:017FH         PUBLIC        _delay
+  B:00A8H.4       PUBLIC        ES
+  B:0098H.0       PUBLIC        RI
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/01/2022  13:47:19  PAGE 3
+
+
+  B:0098H.1       PUBLIC        TI
+  D:0008H         PUBLIC        Buf
+  C:014AH         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0016H         PUBLIC        buf
+  C:0125H         PUBLIC        _UART_send_string
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+  C:0170H         PUBLIC        UART_init
+  B:0088H.6       PUBLIC        TR1
+  C:018AH         PUBLIC        _UART_send_byte
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        n
+  C:017FH         LINE#         15
+  C:017FH         LINE#         16
+  C:017FH         LINE#         17
+  C:0189H         LINE#         18
+  -------         ENDPROC       _DELAY
+  -------         PROC          SERIAL
+  C:00B2H         LINE#         21
+  C:00BCH         LINE#         23
+  C:00BEH         LINE#         24
+  C:00C0H         LINE#         25
+  C:00C3H         LINE#         26
+  C:00F2H         LINE#         27
+  C:00F2H         LINE#         28
+  C:00F7H         LINE#         29
+  C:00FCH         LINE#         30
+  C:0101H         LINE#         31
+  C:0106H         LINE#         32
+  C:010BH         LINE#         33
+  C:0110H         LINE#         34
+  C:0115H         LINE#         35
+  C:0118H         LINE#         36
+  C:0118H         LINE#         37
+  C:011AH         LINE#         39
+  -------         ENDPROC       SERIAL
+  -------         PROC          UART_INIT
+  C:0170H         LINE#         42
+  C:0170H         LINE#         43
+  C:0170H         LINE#         44
+  C:0173H         LINE#         46
+  C:0176H         LINE#         47
+  C:0179H         LINE#         48
+  C:017CH         LINE#         50
+  C:017EH         LINE#         51
+  -------         ENDPROC       UART_INIT
+  -------         PROC          _UART_SEND_BYTE
+  D:0007H         SYMBOL        dat
+  C:018AH         LINE#         54
+  C:018AH         LINE#         55
+  C:018CH         LINE#         56
+  C:018FH         LINE#         57
+  C:0191H         LINE#         58
+  -------         ENDPROC       _UART_SEND_BYTE
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/01/2022  13:47:19  PAGE 4
+
+
+  -------         PROC          _UART_SEND_STRING
+  D:0017H         SYMBOL        buf
+  C:0125H         LINE#         61
+  C:012BH         LINE#         62
+  C:012BH         LINE#         63
+  C:0136H         LINE#         64
+  C:0136H         LINE#         65
+  C:0147H         LINE#         66
+  C:0149H         LINE#         67
+  -------         ENDPROC       _UART_SEND_STRING
+  -------         PROC          MAIN
+  C:014AH         LINE#         69
+  C:014AH         LINE#         70
+  C:014AH         LINE#         71
+  C:014DH         LINE#         73
+  C:014DH         LINE#         74
+  C:014DH         LINE#         76
+  C:0156H         LINE#         77
+  C:015DH         LINE#         78
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        EX02
+
+  -------         MODULE        ?C?CLDPTR
+  C:0003H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  BUF
+    MODULE:  .\Objects\EX02.obj (EX02)
+
+Program Size: data=27.0 xdata=0 code=395
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  1 ERROR(S)

@@ -1,0 +1,148 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              12/02/2022 16:26:28 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE source\main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRI
+                    -NT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #define  _MAIN_C
+   2          #include "config.h"
+   3          #include "Lcd1602.h"
+   4          #include "LedBuzzer.h"
+   5          #include "keyboard.h"
+   6          #include "DS1302.h"
+   7          #include "DS18B20.h"
+   8          #include "Infrared.h"
+   9          #include "Time.h"
+  10          #include "main.h"
+  11          
+  12          bit flag2s = 0;    //2s定时标志位
+  13          bit flag200ms = 0; //200ms定时标志
+  14          uint8 T0RH = 0;    //T0重载值的高字节
+  15          uint8 T0RL = 0;    //T0重载值的低字节
+  16          enum eStaSystem staSystem = E_NORMAL;  //系统运行状态
+  17          
+  18          void main()
+  19          {
+  20   1          EA = 1;           //开总中断
+  21   1          ConfigTimer0(1);  //配置T0定时1ms
+  22   1          InitLed();        //初始化LED模块
+  23   1          InitDS1302();     //初始化实时时钟模块
+  24   1          InitInfrared();   //初始化红外接收模块
+  25   1          InitLcd1602();    //初始化液晶模块
+  26   1          Start18B20();     //启动首次温度转换
+  27   1          
+  28   1          while (!flag2s);  //上电后延时2秒
+  29   1          flag2s = 0;
+  30   1          RefreshTime();    //刷新当前时间
+  31   1          RefreshDate(1);   //立即刷新日期显示
+  32   1          RefreshTemp(1);   //立即刷新温度显示
+  33   1          RefreshAlarm();   //闹钟设定值显示
+  34   1          
+  35   1          while (1)  //进入主循环
+  36   1          {
+  37   2              KeyDriver();      //执行按键驱动
+  38   2              InfraredDriver(); //执行红外接收驱动
+  39   2              if (flag200ms)    //每隔200ms执行以下分支
+  40   2              {
+  41   3                  flag200ms = 0;
+  42   3                  FlowingLight();  //流水灯效果实现
+  43   3                  RefreshTime();   //刷新当前时间
+  44   3                  AlarmMonitor();  //监控闹钟
+  45   3                  if (staSystem == E_NORMAL)  //正常运行时刷新日期显示
+  46   3                  {
+  47   4                      RefreshDate(0);
+  48   4                  }
+  49   3              }
+  50   2              if (flag2s)  //每隔2s执行以下分支
+  51   2              {
+  52   3                  flag2s = 0;
+  53   3                  if (staSystem == E_NORMAL)  //正常运行时刷新温度显示
+  54   3                  {
+C51 COMPILER V9.59.0.0   MAIN                                                              12/02/2022 16:26:28 PAGE 2   
+
+  55   4                      RefreshTemp(0);
+  56   4                  }
+  57   3              }
+  58   2          }
+  59   1      }
+  60          /* 温度刷新函数，读取当前温度并根据需要刷新液晶显示，
+  61          ** ops-刷新选项：为0时只当温度变化才刷新，非0则立即刷新 */
+  62          void RefreshTemp(uint8 ops)
+  63          {
+  64   1          int16 temp;
+  65   1          uint8 pdata str[8];
+  66   1          static int16 backup = 0;
+  67   1          
+  68   1          Get18B20Temp(&temp); //获取当前温度值
+  69   1          Start18B20();        //启动下一次转换
+  70   1          temp >>= 4;          //舍弃4bit小数位
+  71   1          if ((backup!=temp) || (ops!=0)) //按需要刷新液晶显示
+  72   1          {
+  73   2              str[0] = (temp/10) + '0';  //十位转为ASCII码
+  74   2              str[1] = (temp%10) + '0';  //个位转为ASCII码
+  75   2              str[2] = '\'';             //用'C代替℃
+  76   2              str[3] = 'C';
+  77   2              str[4] = '\0';             //字符串结束符
+  78   2              LcdShowStr(12, 0, str);    //显示到液晶上
+  79   2              backup = temp;             //刷新上次温度值
+  80   2          }
+  81   1      }
+  82          /* 配置并启动T0，ms-T0定时时间 */
+  83          void ConfigTimer0(uint16 ms)
+  84          {
+  85   1          uint32 tmp;
+  86   1          
+  87   1          tmp = (SYS_MCLK*ms)/1000; //计算所需的计数值
+  88   1          tmp = 65536 - tmp;        //计算定时器重载值
+  89   1          tmp = tmp + 33;           //补偿中断响应延时造成的误差   
+  90   1          T0RH = (uint8)(tmp>>8);   //定时器重载值拆分为高低字节
+  91   1          T0RL = (uint8)tmp;
+  92   1          TMOD &= 0xF0;   //清零T0的控制位
+  93   1          TMOD |= 0x01;   //配置T0为模式1
+  94   1          TH0 = T0RH;     //加载T0重载值
+  95   1          TL0 = T0RL;
+  96   1          ET0 = 1;        //使能T0中断
+  97   1          TR0 = 1;        //启动T0
+  98   1      }
+  99          /* T0中断服务函数，实现系统定时和按键扫描 */
+ 100          void InterruptTimer0() interrupt 1
+ 101          {
+ 102   1          static uint8 tmr2s = 0;
+ 103   1          static uint8 tmr200ms = 0;
+ 104   1          
+ 105   1          TH0 = T0RH;  //重新加载重载值
+ 106   1          TL0 = T0RL;
+ 107   1          tmr200ms++;  //定时200ms
+ 108   1          if (tmr200ms >= 200)
+ 109   1          {
+ 110   2              tmr200ms = 0;
+ 111   2              flag200ms = 1;
+ 112   2              tmr2s++;  //定时2s
+ 113   2              if (tmr2s >= 10)
+ 114   2              {
+ 115   3                  tmr2s = 0;
+ 116   3                  flag2s = 1;
+C51 COMPILER V9.59.0.0   MAIN                                                              12/02/2022 16:26:28 PAGE 3   
+
+ 117   3              }
+ 118   2          }
+ 119   1          KeyScan();   //执行按键扫描
+ 120   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    403    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----       8
+   DATA SIZE        =      7       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,11 @@
+".\Objects\STARTUP.obj",
+".\Objects\DS18B20.obj",
+".\Objects\DS1302.obj",
+".\Objects\Infrared.obj",
+".\Objects\keyboard.obj",
+".\Objects\Lcd1602.obj",
+".\Objects\LedBuzzer.obj",
+".\Objects\main.obj",
+".\Objects\Time.obj" 
+TO ".\Objects\EX4" 
+PRINT(".\Listings\EX4.m51") RAMSIZE(256) 

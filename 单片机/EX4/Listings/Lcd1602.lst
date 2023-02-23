@@ -1,0 +1,136 @@
+C51 COMPILER V9.59.0.0   LCD1602                                                           12/02/2022 16:26:28 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE LCD1602
+OBJECT MODULE PLACED IN .\Objects\Lcd1602.obj
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE source\Lcd1602.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND 
+                    -PRINT(.\Listings\Lcd1602.lst) TABS(2) OBJECT(.\Objects\Lcd1602.obj)
+
+line level    source
+
+   1          #define  _LCD1602_C
+   2          #include "config.h"
+   3          #include "Lcd1602.h"
+   4          
+   5          bit tmpADDR0;  //暂存LED位选译码地址0的值
+   6          bit tmpADDR1;  //暂存LED位选译码地址1的值
+   7          
+   8          /* 暂停LED动态扫描，暂存相关引脚的值 */
+   9          void LedScanPause()
+  10          {
+  11   1          ENLED = 1;
+  12   1          tmpADDR0 = ADDR0;
+  13   1          tmpADDR1 = ADDR1;
+  14   1      }
+  15          /* 恢复LED动态扫描，恢复相关引脚的值 */
+  16          void LedScanContinue()
+  17          {
+  18   1          ADDR0 = tmpADDR0;
+  19   1          ADDR1 = tmpADDR1;
+  20   1          ENLED = 0;
+  21   1      }
+  22          /* 等待液晶准备好 */
+  23          void LcdWaitReady()
+  24          {
+  25   1          uint8 sta;
+  26   1          
+  27   1          LCD1602_DB = 0xFF;
+  28   1          LCD1602_RS = 0;
+  29   1          LCD1602_RW = 1;
+  30   1          do {
+  31   2              LCD1602_E = 1;
+  32   2              sta = LCD1602_DB; //读取状态字
+  33   2              LCD1602_E = 0;
+  34   2          } while (sta & 0x80); //bit7等于1表示液晶正忙，重复检测直到其等于0为止
+  35   1      }
+  36          /* 向LCD1602液晶写入一字节命令，cmd-待写入命令值 */
+  37          void LcdWriteCmd(uint8 cmd)
+  38          {
+  39   1          LedScanPause();
+  40   1          LcdWaitReady();
+  41   1          LCD1602_RS = 0;
+  42   1          LCD1602_RW = 0;
+  43   1          LCD1602_DB = cmd;
+  44   1          LCD1602_E  = 1;
+  45   1          LCD1602_E  = 0;
+  46   1          LedScanContinue();
+  47   1      }
+  48          /* 向LCD1602液晶写入一字节数据，dat-待写入数据值 */
+  49          void LcdWriteDat(uint8 dat)
+  50          {
+  51   1          LedScanPause();
+  52   1          LcdWaitReady();
+  53   1          LCD1602_RS = 1;
+  54   1          LCD1602_RW = 0;
+C51 COMPILER V9.59.0.0   LCD1602                                                           12/02/2022 16:26:28 PAGE 2   
+
+  55   1          LCD1602_DB = dat;
+  56   1          LCD1602_E  = 1;
+  57   1          LCD1602_E  = 0;
+  58   1          LedScanContinue();
+  59   1      }
+  60          /* 清屏 */
+  61          void LcdClearScreen()
+  62          {
+  63   1        LcdWriteCmd(0x01);
+  64   1      }
+  65          /* 打开光标的闪烁效果 */
+  66          void LcdOpenCursor()
+  67          {
+  68   1        LcdWriteCmd(0x0F);
+  69   1      }
+  70          /* 关闭光标显示 */
+  71          void LcdCloseCursor()
+  72          {
+  73   1        LcdWriteCmd(0x0C);
+  74   1      }
+  75          /* 设置显示RAM起始地址，亦即光标位置，(x,y)-对应屏幕上的字符坐标 */
+  76          void LcdSetCursor(uint8 x, uint8 y)
+  77          {
+  78   1          uint8 addr;
+  79   1          
+  80   1          if (y == 0)  //由输入的屏幕坐标计算显示RAM的地址
+  81   1              addr = 0x00 + x;  //第一行字符地址从0x00起始
+  82   1          else
+  83   1              addr = 0x40 + x;  //第二行字符地址从0x40起始
+  84   1          LcdWriteCmd(addr | 0x80);  //设置RAM地址
+  85   1      }
+  86          /* 在液晶上显示字符串，(x,y)-对应屏幕上的起始坐标，str-字符串指针 */
+  87          void LcdShowStr(uint8 x, uint8 y, uint8 *str)
+  88          {
+  89   1          LcdSetCursor(x, y);   //设置起始地址
+  90   1          while (*str != '\0')  //连续写入字符串数据，直到检测到结束符
+  91   1          {
+  92   2              LcdWriteDat(*str++);
+  93   2          }
+  94   1      }
+  95          /* 在液晶上显示一个字符，(x,y)-对应屏幕上的起始坐标，chr-字符ASCII码 */
+  96          void LcdShowChar(uint8 x, uint8 y, uint8 chr)
+  97          {
+  98   1          LcdSetCursor(x, y);  //设置起始地址
+  99   1          LcdWriteDat(chr);    //写入ASCII字符
+ 100   1      }
+ 101          /* 初始化1602液晶 */
+ 102          void InitLcd1602()
+ 103          {
+ 104   1          LcdWriteCmd(0x38);  //16*2显示，5*7点阵，8位数据接口
+ 105   1          LcdWriteCmd(0x0C);  //显示器开，光标关闭
+ 106   1          LcdWriteCmd(0x06);  //文字不动，地址自动+1
+ 107   1          LcdWriteCmd(0x01);  //清屏
+ 108   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    183    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+C51 COMPILER V9.59.0.0   LCD1602                                                           12/02/2022 16:26:28 PAGE 3   
+
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

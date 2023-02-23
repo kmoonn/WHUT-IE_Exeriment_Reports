@@ -1,0 +1,77 @@
+C51 COMPILER V9.59.0.0   PCTOC51                                                           11/21/2022 18:52:37 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE PCTOC51
+OBJECT MODULE PLACED IN .\Objects\PCtoC51.obj
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE PCtoC51.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.
+                    -\Listings\PCtoC51.lst) TABS(2) OBJECT(.\Objects\PCtoC51.obj)
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #define uchar unsigned char
+   3          #define uint  unsigned int
+   4          uchar buf;
+   5          
+   6          sbit ADDR0=P1^0;  //位地址声明
+   7          sbit ADDR1=P1^1;
+   8          sbit ADDR2=P1^2;
+   9          sbit ADDR3=P1^3;
+  10          sbit ENLED=P1^4;
+  11          
+  12          void main(void)
+  13          {
+  14   1        ENLED=0;  //74HC138使能
+  15   1        ADDR3=1;
+  16   1        
+  17   1        ADDR2=1;  //74HC138输入A2A1A0
+  18   1        ADDR1=1;
+  19   1        ADDR0=0;
+  20   1        
+  21   1      SCON=0x50;//设定串口工作方式0101 0000
+  22   1      PCON=0x00;
+  23   1      TMOD=0x20;
+  24   1      EA=1;
+  25   1      ES=1;
+  26   1      TL1=0xfd;//波特率9600
+  27   1      TH1=0xfd;
+  28   1      TR1=1;
+  29   1      while(1);
+  30   1      }
+  31           
+  32          //串行中断服务函数
+  33          void serial() interrupt 4
+  34            {
+  35   1        ES=0;   //暂时关闭串口中断
+  36   1        RI=0;
+  37   1        buf=SBUF; //把收到的信息从SBUF放到buf中。
+  38   1        switch(buf)
+  39   1        {
+  40   2        case 0x31: P0=0xfe;break;   //二进制 0011 0001  十进制 49 控制字符 1  16进制 0X31
+  41   2        case 0x32: P0=0xfd;break;  //1111 1101
+  42   2        case 0x33: P0=0xfb;break;
+  43   2        case 0x34: P0=0xf7;break;
+  44   2        case 0x35: P0=0xef;break;   
+  45   2        case 0x36: P0=0xdf;break; 
+  46   2        case 0x37: P0=0xbf;break;
+  47   2        case 0x38: P0=0x7f;break;
+  48   2        }
+  49   1        ES=1;   //重新开启串口中断
+  50   1       
+  51   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V9.59.0.0   PCTOC51                                                           11/21/2022 18:52:37 PAGE 2   
+
+   CODE SIZE        =    148    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

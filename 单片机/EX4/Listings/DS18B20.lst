@@ -1,0 +1,139 @@
+C51 COMPILER V9.59.0.0   DS18B20                                                           12/02/2022 16:26:28 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE DS18B20
+OBJECT MODULE PLACED IN .\Objects\DS18B20.obj
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE source\DS18B20.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND 
+                    -PRINT(.\Listings\DS18B20.lst) TABS(2) OBJECT(.\Objects\DS18B20.obj)
+
+line level    source
+
+   1          /*
+   2          描述：温度传感器DS18B20驱动模块
+   3          */
+   4          #define  _DS18B20_C
+   5          #include "config.h"
+   6          #include "DS18B20.h"
+   7          
+   8          void DelayX10us(uint8 t)
+   9          {
+  10   1          do {
+  11   2              _nop_();
+  12   2              _nop_();
+  13   2              _nop_();
+  14   2              _nop_();
+  15   2              _nop_();
+  16   2              _nop_();
+  17   2              _nop_();
+  18   2              _nop_();
+  19   2          } while (--t);
+  20   1      }
+  21          /* 复位总线，获取存在脉冲，以启动一次读写操作 */
+  22          bit Get18B20Ack()
+  23          {
+  24   1          bit ack;
+  25   1          
+  26   1          EA = 0;   //禁止总中断
+  27   1          IO_18B20 = 0;     //产生500us复位脉冲
+  28   1          DelayX10us(50);
+  29   1          IO_18B20 = 1;
+  30   1          DelayX10us(6);    //延时60us
+  31   1          ack = IO_18B20;   //读取存在脉冲
+  32   1          while(!IO_18B20); //等待存在脉冲结束
+  33   1          EA = 1;   //重新使能总中断
+  34   1          
+  35   1          return ack;
+  36   1      }
+  37          /* 向DS18B20写入一个字节，dat-待写入字节 */
+  38          void Write18B20(uint8 dat)
+  39          {
+  40   1          uint8 mask;
+  41   1          
+  42   1          EA = 0;   //禁止总中断
+  43   1          for (mask=0x01; mask!=0; mask<<=1)  //低位在先，依次移出8个bit
+  44   1          {
+  45   2              IO_18B20 = 0;         //产生2us低电平脉冲
+  46   2              _nop_();
+  47   2              _nop_();
+  48   2              if ((mask&dat) == 0)  //输出该bit值
+  49   2                  IO_18B20 = 0;
+  50   2              else
+  51   2                  IO_18B20 = 1;
+  52   2              DelayX10us(6);        //延时60us
+  53   2              IO_18B20 = 1;         //拉高通信引脚
+  54   2          }
+C51 COMPILER V9.59.0.0   DS18B20                                                           12/02/2022 16:26:28 PAGE 2   
+
+  55   1          EA = 1;   //重新使能总中断
+  56   1      }
+  57          /* 从DS18B20读取一个字节，返回值-读到的字节 */
+  58          uint8 Read18B20()
+  59          {
+  60   1          uint8 dat;
+  61   1          uint8 mask;
+  62   1          
+  63   1          EA = 0;   //禁止总中断
+  64   1          for (mask=0x01; mask!=0; mask<<=1)  //低位在先，依次采集8个bit
+  65   1          {
+  66   2              IO_18B20 = 0;         //产生2us低电平脉冲
+  67   2              _nop_();
+  68   2              _nop_();
+  69   2              IO_18B20 = 1;         //结束低电平脉冲，等待18B20输出数据
+  70   2              _nop_();              //延时2us
+  71   2              _nop_();
+  72   2              if (!IO_18B20)        //读取通信引脚上的值
+  73   2                  dat &= ~mask;
+  74   2              else
+  75   2                  dat |= mask;
+  76   2              DelayX10us(6);        //再延时60us
+  77   2          }
+  78   1          EA = 1;   //重新使能总中断
+  79   1      
+  80   1          return dat;
+  81   1      }
+  82          /* 启动一次18B20温度转换，返回值-表示是否启动成功 */
+  83          bit Start18B20()
+  84          {
+  85   1          bit ack;
+  86   1          
+  87   1          ack = Get18B20Ack();   //执行总线复位，并获取18B20应答
+  88   1          if (ack == 0)          //如18B20正确应答，则启动一次转换
+  89   1          {
+  90   2              Write18B20(0xCC);  //跳过ROM操作
+  91   2              Write18B20(0x44);  //启动一次温度转换
+  92   2          }
+  93   1          return ~ack;   //ack==0表示操作成功，所以返回值对其取反
+  94   1      }
+  95          /* 读取DS18B20转换的温度值，返回值-表示是否读取成功 */
+  96          bit Get18B20Temp(int16 *temp)
+  97          {
+  98   1          bit ack;
+  99   1          uint8 LSB, MSB; //16bit温度值的低字节和高字节
+ 100   1          
+ 101   1          ack = Get18B20Ack();    //执行总线复位，并获取18B20应答
+ 102   1          if (ack == 0)           //如18B20正确应答，则读取温度值
+ 103   1          {
+ 104   2              Write18B20(0xCC);   //跳过ROM操作
+ 105   2              Write18B20(0xBE);   //发送读命令
+ 106   2              LSB = Read18B20();  //读温度值的低字节
+ 107   2              MSB = Read18B20();  //读温度值的高字节
+ 108   2              *temp = ((int16)MSB << 8) + LSB;  //合成为16bit整型数
+ 109   2          }
+ 110   1        return ~ack;  //ack==0表示操作应答，所以返回值为其取反值
+ 111   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    187    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.59.0.0   DS18B20                                                           12/02/2022 16:26:28 PAGE 3   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       3
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

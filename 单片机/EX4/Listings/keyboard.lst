@@ -1,0 +1,103 @@
+C51 COMPILER V9.59.0.0   KEYBOARD                                                          12/02/2022 16:26:28 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE KEYBOARD
+OBJECT MODULE PLACED IN .\Objects\keyboard.obj
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE source\keyboard.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND
+                    - PRINT(.\Listings\keyboard.lst) TABS(2) OBJECT(.\Objects\keyboard.obj)
+
+line level    source
+
+   1          #define  _KEY_BOARD_C
+   2          #include "config.h"
+   3          #include "keyboard.h"
+   4          #include "Time.h"
+   5          
+   6          const uint8 code KeyCodeMap[4][4] = {  //矩阵按键到标准键码的映射表
+   7              { '1',  '2',  '3', 0x26 },  //数字键1、数字键2、数字键3、向上键
+   8              { '4',  '5',  '6', 0x25 },  //数字键4、数字键5、数字键6、向左键
+   9              { '7',  '8',  '9', 0x28 },  //数字键7、数字键8、数字键9、向下键
+  10              { '0', 0x1B, 0x0D, 0x27 }   //数字键0、ESC键、  回车键、 向右键
+  11          };
+  12          uint8 pdata KeySta[4][4] = {  //全部矩阵按键的当前状态
+  13              {1, 1, 1, 1},  {1, 1, 1, 1},  {1, 1, 1, 1},  {1, 1, 1, 1}
+  14          };
+  15          
+  16          /* 按键驱动函数，检测按键动作，调度相应动作函数，需在主循环中调用 */
+  17          void KeyDriver()
+  18          {
+  19   1          uint8 i, j;
+  20   1          static uint8 pdata backup[4][4] = {  //按键值备份，保存前一次的值
+  21   1              {1, 1, 1, 1},  {1, 1, 1, 1},  {1, 1, 1, 1},  {1, 1, 1, 1}
+  22   1          };
+  23   1          
+  24   1          for (i=0; i<4; i++)  //循环检测4*4的矩阵按键
+  25   1          {
+  26   2              for (j=0; j<4; j++)
+  27   2              {
+  28   3                  if (backup[i][j] != KeySta[i][j])    //检测按键动作
+  29   3                  {
+  30   4                      if (backup[i][j] != 0)           //按键按下时执行动作
+  31   4                      {
+  32   5                          KeyAction(KeyCodeMap[i][j]); //调用按键动作函数
+  33   5                      }
+  34   4                      backup[i][j] = KeySta[i][j];     //刷新前一次的备份值
+  35   4                  }
+  36   3              }
+  37   2          }
+  38   1      }
+  39          /* 按键扫描函数，需在定时中断中调用，推荐调用间隔1ms */
+  40          void KeyScan()
+  41          {
+  42   1          uint8 i;
+  43   1          static uint8 keyout = 0;   //矩阵按键扫描输出索引
+  44   1          static uint8 keybuf[4][4] = {  //矩阵按键扫描缓冲区
+  45   1              {0xFF, 0xFF, 0xFF, 0xFF},  {0xFF, 0xFF, 0xFF, 0xFF},
+  46   1              {0xFF, 0xFF, 0xFF, 0xFF},  {0xFF, 0xFF, 0xFF, 0xFF}
+  47   1          };
+  48   1      
+  49   1          //将一行的4个按键值移入缓冲区
+  50   1          keybuf[keyout][0] = (keybuf[keyout][0] << 1) | KEY_IN_1;
+  51   1          keybuf[keyout][1] = (keybuf[keyout][1] << 1) | KEY_IN_2;
+  52   1          keybuf[keyout][2] = (keybuf[keyout][2] << 1) | KEY_IN_3;
+  53   1          keybuf[keyout][3] = (keybuf[keyout][3] << 1) | KEY_IN_4;
+  54   1          //消抖后更新按键状态
+C51 COMPILER V9.59.0.0   KEYBOARD                                                          12/02/2022 16:26:28 PAGE 2   
+
+  55   1          for (i=0; i<4; i++)  //每行4个按键，所以循环4次
+  56   1          {
+  57   2              if ((keybuf[keyout][i] & 0x0F) == 0x00)
+  58   2              {   //连续4次扫描值为0，即4*4ms内都是按下状态时，可认为按键已稳定的按下
+  59   3                  KeySta[keyout][i] = 0;
+  60   3              }
+  61   2              else if ((keybuf[keyout][i] & 0x0F) == 0x0F)
+  62   2              {   //连续4次扫描值为1，即4*4ms内都是弹起状态时，可认为按键已稳定的弹起
+  63   3                  KeySta[keyout][i] = 1;
+  64   3              }
+  65   2          }
+  66   1          //执行下一次的扫描输出
+  67   1          keyout++;        //输出索引递增
+  68   1          keyout &= 0x03;  //索引值加到4即归零
+  69   1          switch (keyout)  //根据索引值，释放当前输出引脚，拉低下次的输出引脚
+  70   1          {
+  71   2              case 0: KEY_OUT_4 = 1; KEY_OUT_1 = 0; break;
+  72   2              case 1: KEY_OUT_1 = 1; KEY_OUT_2 = 0; break;
+  73   2              case 2: KEY_OUT_2 = 1; KEY_OUT_3 = 0; break;
+  74   2              case 3: KEY_OUT_3 = 1; KEY_OUT_4 = 0; break;
+  75   2              default: break;
+  76   2          }
+  77   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    353    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =     32    ----
+   DATA SIZE        =     17       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
