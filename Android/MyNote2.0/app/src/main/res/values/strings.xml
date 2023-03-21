@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Note</string>
+
+    <string name="action_exit">退出</string>
+    <string name="action_website">学习</string>
+    <string name="action_write">记录</string>
+    <string name="studyNote">学习笔记</string>
+    <string name="back">返回</string>
+    <string name="title">标题</string>
+    <string name="content">正文</string>
+    <string name="time">时间</string>
+    <string name="note">记录</string>
+    <string name="save">保存</string>
+    <string name="photo">相机</string>
+    <string name="alum">相册</string>
+    <string name="author">作者</string>
+    <string name="delete">删除</string>
+    <string name="picture">图片</string>
+
+</resources>

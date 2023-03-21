@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageViewtop"
+        android:layout_width="match_parent"
+        android:layout_height="164dp"
+        android:src="@drawable/img_1" />
+
+    <TextView
+        android:id="@+id/timeView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="#B89A9A"
+        android:gravity="center"
+        />
+
+    <EditText
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/title"
+        android:maxEms="40"
+        android:singleLine="true"
+        android:textColor="#B89A9A"
+        android:layout_weight="2"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/authorText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:text="@string/author"
+        android:maxEms="40"
+        android:singleLine="true"
+        android:textColor="#B89A9A"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/contentText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="14"
+        android:gravity="left"
+        android:text="@string/note"
+        android:textColor="#B89A9A"
+        android:textStyle="italic"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="2"
+        >
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/save"/>
+
+        <Button
+            android:id="@+id/takePhotoButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/photo"/>
+        <Button
+            android:id="@+id/fromAlbumButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/alum"/>
+
+    </LinearLayout>
+
+</LinearLayout>
