@@ -1,0 +1,9 @@
+A=magic(3);
+B=ones(3);
+A(8,8)=0;
+B(8,8)=0;
+C=ifft2(fft2(A).*fft2(B));
+C=C(1:5,1:5);
+C=real(C);
+C2=conv2(A,B);
+C2=C2(1:5,1:5);

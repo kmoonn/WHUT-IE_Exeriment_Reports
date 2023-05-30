@@ -1,0 +1,23 @@
+cr=0.5;
+I1=imread('hushan.jpg');
+I1=rgb2gray(I1);
+I1=double(I1)/255;
+[x,y]=size(I1);
+imshow(I1);
+figure;
+t=dctmtx(8);
+dctceo=blkproc(I1,[8,8],'P1*x*P2',t,t');
+coevar=im2col(dctceo,[8,8],'distinct');
+coe=coevar;
+[Y,ind]=sort(coevar);
+[m,n]=size(coevar);
+snum=64-64*cr;
+for i=1:n
+    coe(ind(1:snum),i)=0;
+end
+b2=col2im(coe,[8,8],[x,y],'distinct');
+I2=blkproc(b2,[8,8],'P1*x*P2',t',t);
+imshow(I2);
+e=double(I1)-double(I2);
+[m,n]=size(e);
+erms=sqrt(sum(e(:).^2)/(m*n));

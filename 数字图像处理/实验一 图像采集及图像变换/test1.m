@@ -1,0 +1,14 @@
+RGB=imread('hushan.bmp');
+imshow(RGB);
+figure;
+GRAY=rgb2gray(RGB);%RGB图像转灰度图像
+imshow(GRAY);
+figure;
+[IND,map]=gray2ind(GRAY);%灰度图像转索引图像
+imshow(IND,map);
+figure;
+[IND2,map2]=rgb2ind(RGB,32);%RGB图像转索引图像
+imshow(IND2,map2);
+figure;
+BW=im2bw(GRAY,0.5);%灰度图像转二值图像
+imshow(BW);
