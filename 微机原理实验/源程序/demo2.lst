@@ -1,0 +1,56 @@
+Microsoft (R) Macro Assembler Version 6.11		    06/04/23 22:32:12
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATA  SEGMENT
+ 0000 03			A  DB 3
+ 0001 00			B  DB ?
+ 0002				DATA   ENDS
+ 0000				CODE   SEGMENT
+				ASSUME  CS:CODE, DS:DATA
+ 0000  B8 ---- R		START: MOV  AX, DATA
+ 0003  8E D8			        MOV  DS,AX
+ 0005  A0 0000 R		        MOV  AL,A
+ 0008  A8 FF			        TEST  AL,0FFh
+ 000A  7A 06			        jp  ST1
+ 000C  B0 00			        MOV  AL,0
+ 000E  88 04			        MOV  [SI],AL
+ 0010  EB 02			        JMP   ST2
+ 0012  B0 01			ST1:  MOV  AL,1
+ 0014  A2 0001 R		ST2:  MOV  B,AL
+ 0017  8A 16 0001 R		      MOV  DL,B
+ 001B  80 C2 30			      ADD  DL,30H
+ 001E  B4 02			      MOV  AH,02H
+ 0020  CD 21			      INT  21H
+ 0022  B4 4C			      MOV  AH,4CH
+ 0024  CD 21			      INT 21H 
+ 0026				CODE ENDS 
+				END START
+
+
+Microsoft (R) Macro Assembler Version 6.11		    06/04/23 22:32:12
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODE . . . . . . . . . . . . . .	16 Bit	 0026	  Para	  Private 
+DATA . . . . . . . . . . . . . .	16 Bit	 0002	  Para	  Private 
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+A  . . . . . . . . . . . . . . .	Byte	 0000	  DATA	
+B  . . . . . . . . . . . . . . .	Byte	 0001	  DATA	
+ST1  . . . . . . . . . . . . . .	L Near	 0012	  CODE	
+ST2  . . . . . . . . . . . . . .	L Near	 0014	  CODE	
+START  . . . . . . . . . . . . .	L Near	 0000	  CODE	
+
+	   0 Warnings
+	   0 Errors

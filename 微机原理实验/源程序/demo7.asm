@@ -1,0 +1,58 @@
+;Author:信息2001 胡姗
+DATAS SEGMENT
+    ARY DB 2,8,5,7,3,1,9,6	;随机的数据
+    N EQU $-ARY				;定义数据个数
+    STR1 DB 0DH,0AH,'UNSORTED DATA:',0DH,0AH,'$'
+    STR2 DB 0DH,0AH,'AFTER SORTED DATA:',0DH,0AH,'$'	;定义字符串
+    RESULT DB 0		;输出显示暂存值
+DATAS ENDS
+
+CODES SEGMENT
+    ASSUME CS:CODES,DS:DATAS
+START:
+    MOV AX,DATAS		;初始化DS
+    MOV DS,AX			;通过AX赋值
+    LEA DX,STR1
+    MOV AH,9
+    INT 21H
+    
+    LEA SI,ARY
+    MOV CX,N
+AGAIN1:
+	   MOV DL,[SI]
+	   ADD DL,30H
+	   MOV AH,02H
+	   INT 21H
+	   INC SI
+NOEQ1: LOOP AGAIN1
+	   MOV CX,N
+LOP1: MOV SI,0
+	  PUSH CX
+LOP2: MOV AL,ARY[SI]
+      CMP AL,ARY[SI+1]
+      JBE LOP3
+      XCHG AL,ARY[SI+1]
+      MOV ARY[SI],AL
+LOP3: INC SI
+      LOOP LOP2
+      POP CX
+      LOOP LOP1
+      
+      LEA DX,STR2
+      MOV AH,9
+      INT 21H
+      
+      LEA SI,ARY
+      MOV CX,N
+      MOV DI,0
+AGAIN2:
+	   MOV DL,[SI]
+	   ADD DL,30H
+	   MOV AH,02H
+	   INT 21H
+	   INC SI
+NOEQ2: LOOP AGAIN2
+	   MOV AH,4CH
+	   INT 21H
+CODES ENDS
+    END START

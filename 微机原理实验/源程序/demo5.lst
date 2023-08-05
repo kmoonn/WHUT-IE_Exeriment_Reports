@@ -1,0 +1,192 @@
+Microsoft (R) Macro Assembler Version 6.11		    06/14/23 15:14:55
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATAS SEGMENT
+ 0000 20 24				string_5 DB ' ','$'
+ 0002 0005 0003 0009 0001	    ary DW 5, 3, 9, 1, 7     ; 示例输入数据
+       0007
+ 000C 0005			    n DW 5                   ; 示例元素个数
+ 000E				DATAS ENDS
+
+ 0000				STACKS SEGMENT
+				    ;此处输入堆栈段代码
+ 0000				STACKS ENDS
+
+ 0000				CODES SEGMENT
+				    ASSUME CS:CODES, DS:DATAS, SS:STACKS
+ 0000				START:
+ 0000  B8 ---- R		    MOV AX, DATAS
+ 0003  8E D8			    MOV DS, AX
+
+				    ;此处输入代码段代码
+ 0005  8B 0E 000C R		    MOV CX, n               ; 将元素个数存入CX
+ 0009  BE 0000			    MOV SI, 0               ; 外部循环计数器初始化为0
+
+ 000C				outer_loop:
+ 000C  8B FE			    MOV DI, SI              ; 内部循环计数器初始化为外部循环计数器
+
+ 000E				inner_loop:
+ 000E  83 C7 02			    ADD DI, 2               ; DI = SI + 1
+ 0011  8B DE			    MOV BX, SI              ; BX = 外部循环计数器
+ 0013  8B 87 0002 R		    MOV AX, ary[BX]         ; AX = 外部循环元素
+
+ 0017  3B 85 0002 R		    CMP AX, ary[DI]         ; 比较内外循环元素大小
+ 001B  7D 0C			    JNL next_inner_loop      ; 如果内部元素 >= 外部元素，则跳过交换
+
+				    ; 交换内外循环元素
+ 001D  8B 95 0002 R		    MOV DX, ary[DI]
+ 0021  89 85 0002 R		    MOV ary[DI], AX
+ 0025  89 97 0002 R		    MOV ary[BX], DX
+
+ 0029				next_inner_loop:
+ 0029  E2 E3			    LOOP inner_loop         ; 继续内部循环
+
+ 002B  46			    INC SI                  ; 增加外部循环计数器
+ 002C  3B 36 000C R		    CMP SI, n               ; 检查是否完成所有循环
+ 0030  72 DA			    JB outer_loop
+				    
+				    ; 保存CX和SI的值
+ 0032  51			    PUSH CX
+ 0033  56			    PUSH SI
+
+				    ; 输出排序后的数组
+ 0034  8B 0E 000C R		    MOV CX, n               ; 将元素个数存入CX
+ 0038  BE 0000			    MOV SI, 0               ; 重置循环计数器
+
+ 003B				output_loop:
+ 003B  51			    PUSH CX
+ 003C  8B 84 0002 R		    MOV AX, ary[SI]
+				    
+ 0040  E8 002D			    CALL WriteDec           ; 输出无符号数
+ 0043  B2 20			    MOV DL, ' '
+ 0045  E8 001C			    CALL SPACE          ; 输出空格
+ 0048  59			    POP CX
+ 0049  46			    INC SI
+ 004A  3B 36 000C R		    CMP SI, n               ; 检查是否输出完所有元素
+ 004E  72 EB			    JB output_loop
+				    
+				    ; 恢复CX和SI的值
+ 0050  5E			    POP SI
+ 0051  59			    POP CX
+
+ 0052  E8 0004			    CALL CRLF               ; 换行
+
+				    ; 退出程序
+ 0055  B4 4C			    MOV AH, 4CH
+ 0057  CD 21			    INT 21H
+
+ 0059				CRLF PROC Near
+ 0059  50			  push AX
+ 005A  52			  push DX
+ 005B  B2 0A			  MOV DL, 0ah
+ 005D  B4 02			  MOV AH, 2
+ 005F  CD 21			  INT 21H
+ 0061  5A			  pop DX
+ 0062  58			  pop AX
+ 0063  C3			  RET
+ 0064				  CRLF ENDP
+				  
+
+ 0064				SPACE PROC Near
+ 0064  50			  push AX
+ 0065  52			  push DX
+ 0066  BA 0000 R		  MOV DX, OFFSET string_5 ;' '
+ 0069  B4 09			  MOV AH, 9
+ 006B  CD 21			  INT 21H
+ 006D  5A			  pop DX
+ 006E  58			  pop AX
+ 006F  C3			  RET 
+ 0070				  SPACE ENDP
+				  
+ 0070				WriteDec PROC NEAR
+ 0070  50			  PUSH AX
+ 0071  53			  PUSH BX
+ 0072  51			  PUSH CX
+ 0073  52			  PUSH DX
+
+ 0074  33 DB			  XOR BX, BX  ; 用于存储除法的余数
+ 0076  B9 000A			  MOV CX, 10  ; 除数
+
+				  ; 将AX的值保存到DX:BX中，用于除法操作
+ 0079  BA 0000			  MOV DX, 0
+ 007C  8B D8			  MOV BX, AX
+
+				  ; 判断是否为0，如果为0则直接输出'0'
+ 007E  83 F8 00			  CMP AX, 0
+ 0081  75 08			  JNZ not_zero
+ 0083  B2 30			  MOV DL, '0'
+ 0085  B4 02			  MOV AH, 2
+ 0087  CD 21			  INT 21H
+ 0089  EB 10			  JMP end_proc
+
+ 008B				not_zero:
+				  ; 循环除法操作，将每一位的数字存储在栈中
+ 008B				  convert_loop:
+ 008B  33 D2			    XOR DX, DX  ; 清除DX的值
+
+ 008D  F7 F1			    DIV CX  ; AX = BX / CX，DX = BX % CX，商保存在AX，余数保存在DX
+
+ 008F  80 C2 30			    ADD DL, '0'  ; 将余数转换为字符
+
+				    ; 将转换后的字符输出
+ 0092  B4 02			    MOV AH, 2
+ 0094  CD 21			    INT 21H
+
+				    ; 判断商是否为0，如果为0则跳出循环
+ 0096  83 F8 00			    CMP AX, 0
+ 0099  75 F0			    JNZ convert_loop
+
+ 009B				  end_proc:
+ 009B  5A			    POP DX
+ 009C  59			    POP CX
+ 009D  5B			    POP BX
+ 009E  58			    POP AX
+ 009F  C3			    RET
+ 00A0				WriteDec ENDP
+
+ 00A0				CODES ENDS
+				    END START
+
+Microsoft (R) Macro Assembler Version 6.11		    06/14/23 15:14:55
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODES  . . . . . . . . . . . . .	16 Bit	 00A0	  Para	  Private 
+DATAS  . . . . . . . . . . . . .	16 Bit	 000E	  Para	  Private 
+STACKS . . . . . . . . . . . . .	16 Bit	 0000	  Para	  Private 
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+CRLF . . . . . . . . . . . . . .	P Near	 0059	  CODES	Length= 000B Public
+SPACE  . . . . . . . . . . . . .	P Near	 0064	  CODES	Length= 000C Public
+WriteDec . . . . . . . . . . . .	P Near	 0070	  CODES	Length= 0030 Public
+  not_zero . . . . . . . . . . .	L Near	 008B	  CODES	
+  convert_loop . . . . . . . . .	L Near	 008B	  CODES	
+  end_proc . . . . . . . . . . .	L Near	 009B	  CODES	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+START  . . . . . . . . . . . . .	L Near	 0000	  CODES	
+ary  . . . . . . . . . . . . . .	Word	 0002	  DATAS	
+inner_loop . . . . . . . . . . .	L Near	 000E	  CODES	
+next_inner_loop  . . . . . . . .	L Near	 0029	  CODES	
+n  . . . . . . . . . . . . . . .	Word	 000C	  DATAS	
+outer_loop . . . . . . . . . . .	L Near	 000C	  CODES	
+output_loop  . . . . . . . . . .	L Near	 003B	  CODES	
+string_5 . . . . . . . . . . . .	Byte	 0000	  DATAS	
+
+	   0 Warnings
+	   0 Errors

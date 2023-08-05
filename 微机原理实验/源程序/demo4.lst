@@ -1,0 +1,212 @@
+Microsoft (R) Macro Assembler Version 6.11		    06/14/23 14:35:41
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				S0  SEGMENT STACK
+ 0000  0014 [			    DW  20 DUP(?)
+        0000
+       ]
+ 0028				TOP LABEL   WORD
+ 0028				S0  ENDS
+
+ 0000				S1  SEGMENT
+ 0000 49 6E 70 75 74 20		TIP DB  "Input ten number and separate the numbers with space:", 0DH, 0AH, 24H
+       74 65 6E 20 6E 75
+       6D 62 65 72 20 61
+       6E 64 20 73 65 70
+       61 72 61 74 65 20
+       74 68 65 20 6E 75
+       6D 62 65 72 73 20
+       77 69 74 68 20 73
+       70 61 63 65 3A 0D
+       0A 24
+ 0038  0014 [			ARY DW  20 DUP(0)
+        0000
+       ]
+ 0060 0D 0A 24			CRLF DB  0DH, 0AH, 24H
+ 0063 0000			N   DW  0
+ 0065				S1  ENDS
+
+ 0000				S2  SEGMENT
+				    ASSUME  SS:S0, DS:S1, CS:S2, ES:S1
+ 0000				P   PROC    FAR
+ 0000  B8 ---- R		    MOV AX, S0
+ 0003  8E D0			    MOV SS, AX
+ 0005  8D 26 0028 R		    LEA SP, TOP
+
+ 0009  B8 ---- R		    MOV AX, S1
+ 000C  8E D8			    MOV DS, AX
+
+ 000E  B8 ---- R		    MOV AX, S1
+ 0011  8E C0			    MOV ES, AX
+
+ 0013  8D 16 0000 R		    LEA DX, TIP
+ 0017  B4 09			    MOV AH, 9
+ 0019  CD 21			    INT 21H
+
+ 001B  8D 36 0038 R		    LEA SI, ARY
+
+ 001F  33 D2			    XOR DX, DX
+ 0021  B3 0A			    MOV BL, 10
+ 0023  B9 000A			    MOV CX, 10
+
+ 0026  B4 01			INPUT:  MOV AH, 1
+ 0028  CD 21			    INT 21H
+ 002A  3C 20			    CMP AL, 20H ;空格分隔字符
+ 002C  74 0F			    JE  SAVE
+				    ;输入十进制数，将数存入SI对应的内存单元
+ 002E  8A D0			    MOV DL, AL 
+ 0030  8B 04			    MOV AX, [SI]
+ 0032  F6 E3			    MUL BL
+ 0034  80 EA 30			    SUB DL, 30H
+ 0037  02 C2			    ADD AL, DL
+ 0039  89 04			    MOV [SI], AX
+ 003B  EB E9			    JMP INPUT
+ 003D				SAVE:   
+ 003D  83 C6 02			    ADD SI, 2 
+ 0040  E2 E4			    LOOP    INPUT
+				    ;数组保存完毕
+
+ 0042  8D 36 0038 R		    LEA SI, ARY
+
+ 0046  8B FE			    MOV DI, SI
+ 0048  83 C7 02			    ADD DI, 2 ;DI位于数组的第二元素的位置
+
+ 004B  BD 0009			    MOV BP, 9 ;SI移动的次数和每一次比较的次数，第一次为9
+
+ 004E  8B CD			GO: MOV CX, BP ;每一次比较的循环次数
+ 0050  8B 1C			    MOV BX, [SI] ;第一个数
+ 0052  3B 1D			CMPA:   CMP BX, [DI] ;比较后面的数是否比当前的小
+ 0054  76 04			    JBE CON ;大于就比较下一个
+ 0056  8B 1D			    MOV BX, [DI] ;将寄存器中的值替换为最小的值
+ 0058  8B C7			    MOV AX, DI ;AX存放最小值的偏移地址
+ 005A  83 C7 02			CON:    ADD DI, 2
+ 005D  E2 F3			    LOOP    CMPA
+
+ 005F  83 F8 00			    CMP AX, 0 ;如果AX为0，则表示后面的值没有比当前值小
+ 0062  74 0A			    JE  NO ;此时SI加一，移动到第二个数  下一次循环比较开始
+ 0064  8B 14			CHANGE: MOV DX, [SI] ;78-83行替换当前值与最小值
+ 0066  52			    PUSH    DX
+ 0067  89 1C			    MOV [SI], BX
+ 0069  5A			    POP DX
+ 006A  8B F8			    MOV DI, AX
+ 006C  89 15			    MOV [DI], DX
+ 006E  83 C6 02			NO: ADD SI, 2
+ 0071  8B FE			    MOV DI, SI
+ 0073  83 C7 02			    ADD DI, 2
+ 0076  E8 000C			    CALL    PRINT
+ 0079  4D			    DEC BP ;循环的次数减一
+ 007A  33 C0			    XOR AX, AX ;清除AX的内容，以便76行判断
+ 007C  83 FD 01			    CMP BP, 1
+ 007F  75 CD			    JNE GO
+
+ 0081  B4 4C			EXIT:   MOV AH, 4CH
+ 0083  CD 21			    INT 21H
+
+ 0085				P   ENDP
+
+ 0085				PRINT   PROC    NEAR
+ 0085  56			    PUSH    SI
+ 0086  51			    PUSH    CX
+ 0087  50			    PUSH    AX
+ 0088  52			    PUSH    DX
+ 0089  8D 16 0060 R		    LEA DX, CRLF
+ 008D  B4 09			    MOV AH, 9
+ 008F  CD 21			    INT 21H
+
+ 0091  8D 36 0038 R		    LEA SI, ARY
+ 0095  B9 000A			    MOV CX, 10
+ 0098  8B 04			L1: MOV AX, [SI]
+ 009A  A3 0063 R		    MOV N, AX
+ 009D  E8 0011			    CALL    OUTPUT
+ 00A0  83 C6 02			    ADD SI, 2
+ 00A3  BA 0020			    MOV DX, 20H
+ 00A6  B4 02			    MOV AH, 2
+ 00A8  CD 21			    INT 21H
+ 00AA  E2 EC			    LOOP    L1
+ 00AC  5A			    POP DX
+ 00AD  58			    POP AX
+ 00AE  59			    POP CX
+ 00AF  5E			    POP SI
+ 00B0  C3			    RET
+
+ 00B1				PRINT   ENDP
+
+ 00B1				OUTPUT  PROC    NEAR
+ 00B1  50			    PUSH    AX
+ 00B2  53			    PUSH    BX
+ 00B3  51			    PUSH    CX
+ 00B4  52			    PUSH    DX
+
+ 00B5  33 C9			    XOR CX, CX 
+ 00B7  A1 0063 R		    MOV AX, N
+ 00BA  BB 000A			    MOV BX, 10
+ 00BD  33 D2			L2: XOR DX, DX
+ 00BF  F7 F3			    DIV BX
+ 00C1  52			    PUSH    DX
+ 00C2  41			    INC CX
+ 00C3  83 F8 00			    CMP AX, 0
+ 00C6  75 F5			    JNE L2
+
+ 00C8  5A			L3: POP DX
+ 00C9  83 C2 30			    ADD DX, 30H
+ 00CC  B4 02			    MOV AH, 2
+ 00CE  CD 21			    INT 21H
+ 00D0  E2 F6			    LOOP    L3
+
+ 00D2  5A			    POP DX
+ 00D3  59			    POP CX
+ 00D4  5B			    POP BX
+ 00D5  58			    POP AX
+ 00D6  C3			    RET
+ 00D7				OUTPUT  ENDP
+
+ 00D7				S2  ENDS
+				    END P
+Microsoft (R) Macro Assembler Version 6.11		    06/14/23 14:35:41
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+S0 . . . . . . . . . . . . . . .	16 Bit	 0028	  Para	  Stack	  
+S1 . . . . . . . . . . . . . . .	16 Bit	 0065	  Para	  Private 
+S2 . . . . . . . . . . . . . . .	16 Bit	 00D7	  Para	  Private 
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+OUTPUT . . . . . . . . . . . . .	P Near	 00B1	  S2	Length= 0026 Public
+  L2 . . . . . . . . . . . . . .	L Near	 00BD	  S2	
+  L3 . . . . . . . . . . . . . .	L Near	 00C8	  S2	
+PRINT  . . . . . . . . . . . . .	P Near	 0085	  S2	Length= 002C Public
+  L1 . . . . . . . . . . . . . .	L Near	 0098	  S2	
+P  . . . . . . . . . . . . . . .	P Far	 0000	  S2	Length= 0085 Public
+  INPUT  . . . . . . . . . . . .	L Near	 0026	  S2	
+  SAVE . . . . . . . . . . . . .	L Near	 003D	  S2	
+  GO . . . . . . . . . . . . . .	L Near	 004E	  S2	
+  CMPA . . . . . . . . . . . . .	L Near	 0052	  S2	
+  CON  . . . . . . . . . . . . .	L Near	 005A	  S2	
+  CHANGE . . . . . . . . . . . .	L Near	 0064	  S2	
+  NO . . . . . . . . . . . . . .	L Near	 006E	  S2	
+  EXIT . . . . . . . . . . . . .	L Near	 0081	  S2	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+ARY  . . . . . . . . . . . . . .	Word	 0038	  S1	
+CRLF . . . . . . . . . . . . . .	Byte	 0060	  S1	
+N  . . . . . . . . . . . . . . .	Word	 0063	  S1	
+TIP  . . . . . . . . . . . . . .	Byte	 0000	  S1	
+TOP  . . . . . . . . . . . . . .	Word	 0028	  S0	
+
+	   0 Warnings
+	   0 Errors

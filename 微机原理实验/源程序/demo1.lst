@@ -1,0 +1,61 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/30/23 10:09:34
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATA   SEGMENT
+ 0000 02			 X     DB 2
+ 0001 F8			 Y     DB -8
+ 0002 00			 A     DB ?
+ 0003				DATA   ENDS
+ 0000				CODE  SEGMENT
+				      ASSUME CS:CODE,DS:DATA
+ 0000  B8 ---- R		START: MOV  AX,DATA                     
+ 0003  8E D8			      MOV  DS,AX
+ 0005  80 3E 0000 R 00		      CMP  X,0     ;x与0进行比较
+ 000A  78 0E			      JS   L1      ;x<0转L1
+ 000C  80 3E 0001 R 00		      CMP  Y,0    
+ 0011  7C 15			      JL   L2      ;y<0转L2
+ 0013  C6 06 0002 R 01		      MOV  A,1     ;1送A
+ 0018  EB 13			      JMP EXIT
+ 001A  80 3E 0001 R 00		L1:   CMP  Y,0
+ 001F  7D 07			      JGE  L2      ;y>=0转L2
+ 0021  C6 06 0002 R FF		      MOV  A,-1   
+ 0026  EB 05			      JMP EXIT
+ 0028  C6 06 0002 R 00		L2:   MOV  A,0     ;x与y异号时，0送A         
+ 002D  8A 16 0002 R		EXIT: mov dl,A
+ 0031  80 C2 30			      add dl,30h
+ 0034  B4 02			      mov ah,02h   
+ 0036  CD 21			      int 21h      ;字符显示
+ 0038  B4 4C			      MOV AH,4CH
+ 003A  CD 21			      INT 21H        
+ 003C				CODE  ENDS
+				END START
+
+Microsoft (R) Macro Assembler Version 6.11		    05/30/23 10:09:34
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODE . . . . . . . . . . . . . .	16 Bit	 003C	  Para	  Private 
+DATA . . . . . . . . . . . . . .	16 Bit	 0003	  Para	  Private 
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+A  . . . . . . . . . . . . . . .	Byte	 0002	  DATA	
+EXIT . . . . . . . . . . . . . .	L Near	 002D	  CODE	
+L1 . . . . . . . . . . . . . . .	L Near	 001A	  CODE	
+L2 . . . . . . . . . . . . . . .	L Near	 0028	  CODE	
+START  . . . . . . . . . . . . .	L Near	 0000	  CODE	
+X  . . . . . . . . . . . . . . .	Byte	 0000	  DATA	
+Y  . . . . . . . . . . . . . . .	Byte	 0001	  DATA	
+
+	   0 Warnings
+	   0 Errors

@@ -1,0 +1,60 @@
+Microsoft (R) Macro Assembler Version 6.11		    06/04/23 22:36:37
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATA  SEGMENT
+ 0000 53			A  DB  53H
+ 0001 24			B  DB  24H
+ 0002 35 33 2B 32 34 3D		string  DB  '53+24=   $'
+       20 20 20 24
+ 000C				DATA   ENDS
+ 0000				CODE   SEGMENT
+				ASSUME CS:CODE, DS:DATA
+ 0000  B8 ---- R		START:  MOV  AX, DATA
+ 0003  8E D8			          MOV  DS,AX
+ 0005  BE 0002 R		          MOV  SI,OFFSET string
+ 0008  A0 0000 R		          MOV  AL,A
+ 000B  02 06 0001 R		          ADD  AL,B
+ 000F  8A E0			          MOV  AH,AL
+ 0011  24 0F			          AND  AL,0FH
+ 0013  04 30			          ADD  AL,30H
+ 0015  80 E4 F0			          AND  AH,0F0H
+ 0018  B1 04			          MOV  CL,4
+ 001A  D2 EC			          SHR  AH,CL                      
+ 001C  80 C4 30			          ADD  AH,30H
+ 001F  88 64 06			          MOV  [SI+6],AH
+ 0022  88 44 07			          MOV  [SI+7],AL
+ 0025  BA 0002 R		          MOV DX,OFFSET string
+ 0028  B4 09			          MOV AH,09H
+ 002A  CD 21			          INT 21H
+ 002C  B4 4C			          MOV  AH,4CH
+ 002E  CD 21			          INT   21H
+ 0030				    CODE ENDS
+				    END START
+
+
+Microsoft (R) Macro Assembler Version 6.11		    06/04/23 22:36:37
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODE . . . . . . . . . . . . . .	16 Bit	 0030	  Para	  Private 
+DATA . . . . . . . . . . . . . .	16 Bit	 000C	  Para	  Private 
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+A  . . . . . . . . . . . . . . .	Byte	 0000	  DATA	
+B  . . . . . . . . . . . . . . .	Byte	 0001	  DATA	
+START  . . . . . . . . . . . . .	L Near	 0000	  CODE	
+string . . . . . . . . . . . . .	Byte	 0002	  DATA	
+
+	   0 Warnings
+	   0 Errors

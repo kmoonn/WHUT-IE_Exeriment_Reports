@@ -1,0 +1,103 @@
+Microsoft (R) Macro Assembler Version 6.11		    06/14/23 18:47:52
+tempfile.asm						     Page 1 - 1
+
+
+				;Author:信息2001 胡姗
+ 0000				DATAS SEGMENT
+ 0000 02 08 05 07 03 01		    ARY DB 2,8,5,7,3,1,9,6	;随机的数据
+       09 06
+ 0008 = 0008			    N EQU $-ARY				;定义数据个数
+ 0008 0D 0A 55 4E 53 4F		    STR1 DB 0DH,0AH,'UNSORTED DATA:',0DH,0AH,'$'
+       52 54 45 44 20 44
+       41 54 41 3A 0D 0A
+       24
+ 001B 0D 0A 41 46 54 45		    STR2 DB 0DH,0AH,'AFTER SORTED DATA:',0DH,0AH,'$'	;定义字符串
+       52 20 53 4F 52 54
+       45 44 20 44 41 54
+       41 3A 0D 0A 24
+ 0032 00			    RESULT DB 0		;输出显示暂存值
+ 0033				DATAS ENDS
+
+ 0000				CODES SEGMENT
+				    ASSUME CS:CODES,DS:DATAS
+ 0000				START:
+ 0000  B8 ---- R		    MOV AX,DATAS		;初始化DS
+ 0003  8E D8			    MOV DS,AX			;通过AX赋值
+ 0005  8D 16 0008 R		    LEA DX,STR1
+ 0009  B4 09			    MOV AH,9
+ 000B  CD 21			    INT 21H
+				    
+ 000D  8D 36 0000 R		    LEA SI,ARY
+ 0011  B9 0008			    MOV CX,N
+ 0014				AGAIN1:
+ 0014  8A 14				   MOV DL,[SI]
+ 0016  80 C2 30				   ADD DL,30H
+ 0019  B4 02				   MOV AH,02H
+ 001B  CD 21				   INT 21H
+ 001D  46				   INC SI
+ 001E  E2 F4			NOEQ1: LOOP AGAIN1
+ 0020  B9 0008				   MOV CX,N
+ 0023  BE 0000			LOP1: MOV SI,0
+ 0026  51				  PUSH CX
+ 0027  8A 84 0000 R		LOP2: MOV AL,ARY[SI]
+ 002B  3A 84 0001 R		      CMP AL,ARY[SI+1]
+ 002F  76 08			      JBE LOP3
+ 0031  86 84 0001 R		      XCHG AL,ARY[SI+1]
+ 0035  88 84 0000 R		      MOV ARY[SI],AL
+ 0039  46			LOP3: INC SI
+ 003A  E2 EB			      LOOP LOP2
+ 003C  59			      POP CX
+ 003D  E2 E4			      LOOP LOP1
+				      
+ 003F  8D 16 001B R		      LEA DX,STR2
+ 0043  B4 09			      MOV AH,9
+ 0045  CD 21			      INT 21H
+				      
+ 0047  8D 36 0000 R		      LEA SI,ARY
+ 004B  B9 0008			      MOV CX,N
+ 004E  BF 0000			      MOV DI,0
+ 0051				AGAIN2:
+ 0051  8A 14				   MOV DL,[SI]
+ 0053  80 C2 30				   ADD DL,30H
+ 0056  B4 02				   MOV AH,02H
+ 0058  CD 21				   INT 21H
+ 005A  46				   INC SI
+ 005B  E2 F4			NOEQ2: LOOP AGAIN2
+ 005D  B4 4C				   MOV AH,4CH
+ 005F  CD 21				   INT 21H
+ 0061				CODES ENDS
+				    END START
+Microsoft (R) Macro Assembler Version 6.11		    06/14/23 18:47:52
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODES  . . . . . . . . . . . . .	16 Bit	 0061	  Para	  Private 
+DATAS  . . . . . . . . . . . . .	16 Bit	 0033	  Para	  Private 
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+AGAIN1 . . . . . . . . . . . . .	L Near	 0014	  CODES	
+AGAIN2 . . . . . . . . . . . . .	L Near	 0051	  CODES	
+ARY  . . . . . . . . . . . . . .	Byte	 0000	  DATAS	
+LOP1 . . . . . . . . . . . . . .	L Near	 0023	  CODES	
+LOP2 . . . . . . . . . . . . . .	L Near	 0027	  CODES	
+LOP3 . . . . . . . . . . . . . .	L Near	 0039	  CODES	
+NOEQ1  . . . . . . . . . . . . .	L Near	 001E	  CODES	
+NOEQ2  . . . . . . . . . . . . .	L Near	 005B	  CODES	
+N  . . . . . . . . . . . . . . .	Number	 0008h	 
+RESULT . . . . . . . . . . . . .	Byte	 0032	  DATAS	
+START  . . . . . . . . . . . . .	L Near	 0000	  CODES	
+STR1 . . . . . . . . . . . . . .	Byte	 0008	  DATAS	
+STR2 . . . . . . . . . . . . . .	Byte	 001B	  DATAS	
+
+	   0 Warnings
+	   0 Errors
