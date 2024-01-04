@@ -1,5 +1,5 @@
 %载入语音信号
-[x, fs] = audioread ('D:\desktop\数字处理应用综合实训\luyin..wav')
+[x, fs] = audioread ('recorded_audio.wav')
 fid=fopen('test.txt','wt');    %读入语音文件
 fprintf(fid,'%g\n',x (:,1));FS=length(x); t=(0:FS-1)/fs;
 fclose(fid);
