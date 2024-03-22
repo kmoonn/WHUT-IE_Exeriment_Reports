@@ -1,16 +1,14 @@
-# 武汉理工大学 信息工程系 WHUT-IE 实验报告
+# 武汉理工大学 信息工程专业 WHUT-IE 专业必修/选修 实验报告&大作业报告&课程设计
 
 自行阅览 自行把握 有问题可以联系我
 
 &nbsp;
 
-:notebook_with_decorative_cover: 最近更新 `2023-8-24 18:18:18`
+:notebook_with_decorative_cover: 最近更新 `2023-11-15 18:18:18`
 
 主要是课程作业, 实验报告, 大作业代码.
 
-
 &nbsp;
-
 
 ## 贡献
 
@@ -39,11 +37,8 @@
 
 &nbsp;
 
-
 ## 许可
-
 [CC-BY-NC-SA：署名-非商业性使用-相同方式共享](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)
-
 &nbsp;
 
 ## 免责声明
