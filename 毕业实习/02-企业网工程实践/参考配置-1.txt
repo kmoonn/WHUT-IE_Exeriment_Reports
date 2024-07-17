@@ -1,0 +1,306 @@
+erase startup-config
+reboot
+
+---------------------------
+接入 2800 3800
+--------------------------2800-1
+config
+interface vlan 2
+exit
+interface vlan 3
+exit
+interface f 1/0/1 to f 1/0/12
+port link-type hybrid
+port hybrid vlan 2 untagged
+port hybrid pvid 2
+exit
+interface f 1/0/13 to f 1/0/24
+port link-type hybrid 
+port hybrid vlan 3 untagged
+port hybrid pvid 3 
+exit
+interface giga 1/0/26
+port link-tpye trunk
+port trunk allow-pass vlan 2，3
+
+--------------------------2800-2
+config
+interface vlan 4
+exit
+interface f 1/0/1 to f 1/0/15
+port link-type hybrid
+port hybrid vlan 4 untagged
+port hybrid pvid 4
+exit
+interface giga 1/0/26
+port link-type trunk
+port trunk allow-pass vlan 4
+eixt
+--------------------------2800-3
+config
+interface vlan 5
+exit
+interface vlan 6
+exit
+interface f 1/0/1 to f 1/0/12
+port link-type hybrid
+port hybrid vlan 5 untagged
+port hybrid pvid 5
+exit
+interface f 1/0/13 to f 1/0/24
+port link-type hybrid 
+port hybrid vlan 6 untagged
+port hybrid pvid 6 
+exit
+interface giga 1/0/26
+port link-type trunk
+port trunk allow-pass vlan 5,6
+exit
+--------------------------2800-4
+config
+interface vlan 7
+exit
+interface f 1/0/1 to f 1/0/24
+port link-type hybrid
+port hybrid vlan 7 untagged
+port hybrid pvid 7
+exit
+interface giga 1/0/26
+port link-type trunk
+port trunk allow-pass vlan 7
+exit
+--------------------------3800-1
+interface vlan 8
+exit
+interface vlan 9
+exit
+interface vlan 10
+exit
+config
+interface f 1/0/1 to f 1/0/3
+port link-type hybrid
+port hybrid vlan 8 untagged
+port hybrid pvid 8
+
+interface f 1/0/4 to f 1/0/6
+port link-type hybrid 
+port hybrid vlan 9 untagged
+port hybrid pvid 9 
+
+interface f 1/0/7 to f 1/0/9
+port link-type hybrid 
+port hybrid vlan 10 untagged
+port hybrid pvid 10 
+
+interface giga 1/0/26
+port link-type trunk
+port trunk allow-pass vlan 8,9,10
+
+--------------------------3800-2
+interface vlan 11
+exit
+interface vlan 12
+exit
+config
+interface f 1/0/1 to f 1/0/3
+port link-type hybrid
+port hybrid vlan 11 untagged
+port hybrid pvid 11
+
+interface f 1/0/4 to f 1/0/6
+port link-type hybrid 
+port hybrid vlan 12 untagged
+port hybrid pvid 12 
+
+interface giga 1/0/26
+port link-type trunk
+port trunk allow-pass vlan 11.,12
+
+---------------------------------------------
+
+汇聚 / 核心 5800
+interface vlan 2
+ip address 192.168.2.1/24
+exit
+interface vlan 3
+ip address 192.168.3.1/24
+exit
+interface vlan 4
+ip address 192.168.4.1/24
+exit
+interface vlan 5
+ip address 192.168.5.1/24
+exit
+interface vlan 6
+ip address 192.168.6.1/24
+exit
+interface vlan 7
+ip address 192.168.7.1/24
+exit
+interface vlan 8
+ip address 192.168.8.1/24
+exit
+interface vlan 9
+ip address 192.168.9.1/24
+exit
+interface vlan 10
+ip address 192.168.10.1/24
+exit
+interface vlan 11
+ip address 192.168.11.1/24
+exit
+interface vlan 12
+ip address 192.168.12.1/24
+exit
+interface vlan 20
+ip address 192.168.20.1/24
+exit
+interface vlan 110
+ip address 192.168.110.1/24
+exit
+interface vlan 120
+ip address 192.168.120.1/24
+exit
+
+4个trunk口 21~24口
+interface f 1/0/1 或者 giga 1/0/1
+port link-type trunk
+port trunk allow-pass vlan 2
+port trunk allow-pass vlan 3
+interface f 1/0/2 或者 giga 1/0/2
+port link-type trunk
+port trunk allow-pass vlan 3
+port trunk allow-pass vlan 4
+interface f 1/0/3 或者 giga 1/0/3
+port link-type trunk
+port trunk allow-pass vlan 5
+interface f 1/0/4 或者 giga 1/0/4
+port link-type trunk
+port trunk allow-pass vlan 6
+port trunk allow-pass vlan 7
+interface f 1/0/5 或者 giga 1/0/5
+port link-type trunk
+port trunk allow-pass vlan 8
+port trunk allow-pass vlan 9
+port trunk allow-pass vlan 10
+interface f 1/0/6 或者 giga 1/0/6
+port link-type trunk
+port trunk allow-pass vlan 11
+port trunk allow-pass vlan 12
+
+服务器 11~12口  配置
+interface f 1/0/12 或者 giga 1/0/12
+port hybrid vlan 110 untagged
+port hybrid pvid 110
+exit
+interface f 1/0/9 或者 giga 1/0/9
+port hybrid vlan 120 untagged
+port hybrid pvid 120
+exit
+
+与路由通信接口  配置
+interface f 1/0/20 或者 giga 1/0/20
+port hybrid vlan 20 untagged
+port hybrid pvid 20
+
+OSPF协议部分配置
+configure
+router ospf 1
+network 192.168.2.0 255.255.255.0 area 0
+network 192.168.3.0 255.255.255.0 area 0
+network 192.168.4.0 255.255.255.0 area 0
+network 192.168.5.0 255.255.255.0 area 0
+network 192.168.6.0 255.255.255.0 area 0
+network 192.168.7.0 255.255.255.0 area 0
+network 192.168.8.0 255.255.255.0 area 0
+network 192.168.9.0 255.255.255.0 area 0
+network 192.168.10.0 255.255.255.0 area 0
+network 192.168.11.0 255.255.255.0 area 0
+network 192.168.12.0 255.255.255.0 area 0
+network 192.168.110.0 255.255.255.0 area 0
+network 192.168.120.0 255.255.255.0 area 0
+network 192.168.20.0 255.255.255.0 area 0
+
+ACL部分配置
+配置财务部允许访问财务服务器的 ACL，其他办公室禁止访问财务查询服务器的 ACL。
+filter-list 1001
+filter 1 ip 192.168.4.0/24 192.168.120.1/24
+filter 1 action permit
+
+filter 2 ip any 192.168.120.1/24
+filter 2 action deny
+
+将 ACL 应用到端口上
+interface fastethernet 1/0/9 或者 giga 1/0/9
+filter-list out 1001
+quit
+
+DHCP 配置
+//配置 DHCP Server 的 Vlan-interface10 接口的 IP 地址。 
+Switch#configure 
+Switch(config)#dhcp enable 或 start
+Switch(config)#interface vlan 99 
+Switch(config-vlan-100)#ip address 192.168.99.1/24 
+Switch(config-vlan-100)#ip dhcp server 
+//配置地址池 1：地址池范围、有效期，并配置指定的 DNS 服务器。 
+Switch(config)#dhcp pool 1 
+Switch(config-dhcp-pool-1)#network range 192.168.99.2  192.168.99.100 mask 255.255.255.0 
+Switch(config-dhcp-pool-1)#gateway 192.168.99.1 
+Switch(config-dhcp-pool-1)#lease-time 12  （选配）
+Switch(config-dhcp-pool-1)#dns 192.168.100.10
+
+路由器配置(参考1) 路由器
+Router>enable
+Router#config
+Router_config#
+Router_config#interface giga 0/1
+Router_config_g0/1#ip address 192.168.200.1 255.255.255.0
+Router_config_g0/1#exit
+Router_config#interface giga 0/2
+Router_config_g0/2#ip address 192.168.100.1 255.255.255.0
+Router_config_g0/2#exit
+Router_config#interface giga 0/3
+Router_config_g0/3#ip address 192.168.20.254 255.255.255.0
+Router_config_g0/3#exit
+Router_config#router ospf 1
+Router_config_ospf_1#network 192.168.200.0 255.255.255.0 area 0
+Router_config_ospf_1#network 192.168.100.0 255.255.255.0 area 0
+Router_config_ospf_1#network 192.168.20.0 255.255.255.0 area 0
+Router_config_ospf_1#exit
+Router_config#ip access-list standard 1
+Router_config_std_nacl#permit 192.168.2.0 255.255.255.0
+Router_config_std_nacl#permit 192.168.4.0 255.255.255.0
+Router_config_std_nacl#permit 192.168.7.0 255.255.255.0
+Router_config_std_nacl#deny any
+Router_config_std_nacl#exit
+Router_config#interface giga 0/3
+Router_config_g0/3#ip access-group 1 out 
+
+路由器配置(参考2) 路由器
+Router>enable
+Router#config
+Router_config#
+Router_config#interface giga 0/1
+Router_config_g0/1#ip address 192.168.200.1 255.255.255.0
+Router_config_g0/1#ip nat outside
+Router_config_g0/1#exit
+Router_config#interface giga 0/2
+Router_config_g0/2#ip address 192.168.100.1 255.255.255.0
+Router_config_g0/2#ip nat inside
+Router_config_g0/2#exit
+Router_config#interface giga 0/3
+Router_config_g0/3#ip address 192.168.20.254 255.255.255.0
+Router_config_g0/3#ip nat inside
+Router_config_g0/3#exit
+Router_config#router ospf 1
+Router_config_ospf_1#network 192.168.200.0 255.255.255.0 area 0
+Router_config_ospf_1#network 192.168.100.0 255.255.255.0 area 0
+Router_config_ospf_1#network 192.168.20.0 255.255.255.0 area 0
+Router_config_ospf_1#exit
+Router_config#ip access-list standard 1
+Router_config_std_nacl#permit 192.168.2.0 255.255.255.0
+Router_config_std_nacl#permit 192.168.4.0 255.255.255.0
+Router_config_std_nacl#permit 192.168.7.0 255.255.255.0
+Router_config_std_nacl#deny any
+Router_config_std_nacl#exit
+Router_config#ip nat inside source list 1 interface giga 0/3 overload
