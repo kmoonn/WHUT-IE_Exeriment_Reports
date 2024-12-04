@@ -2,13 +2,9 @@
 
 自行阅览 自行把握 有问题可以联系我
 
-&nbsp;
-
 :notebook_with_decorative_cover: 最近更新 `2024-12-4 18:18:18`
 
 主要是课程作业, 实验报告, 大作业代码.
-
-&nbsp;
 
 ## 贡献
 
@@ -25,21 +21,14 @@
   4. 或者联系 `hushan@kmoon.fun`
 + 请确保上传资料无版权问题, **请勿上传课件.**
 
-&nbsp;
-
 期待你的一份力量!
-
-&nbsp;
 
 ## 致谢
 
 感谢对本项目贡献的同学, 以及电脑前star的你,希望可以对你的大学生活起到帮助!
 
-&nbsp;
-
 ## 许可
 [CC-BY-NC-SA：署名-非商业性使用-相同方式共享](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)
-&nbsp;
 
 ## 免责声明
 
