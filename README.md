@@ -35,7 +35,13 @@ PR(Pull Request)、Issue、作业、实验、选课/考试攻略, 非常欢迎!
 感谢对本项目贡献的同学, 以及电脑前star的你,希望可以对你的大学生活起到帮助!
 
 ### 致谢名单
-
+<a href="https://github.com/kmoonn" class="mr-2" data-hovercard-type="user" data-hovercard-url="/users/kmoonn/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self">
+        <img src="https://avatars.githubusercontent.com/u/103509070?s=64&amp;v=4" alt="@kmoonn" size="32" height="32" width="32" data-view-component="true" class="avatar circle">
+      </a>
+      
+<a href="https://github.com/LL-WHUT" class="mr-2" data-hovercard-type="user" data-hovercard-url="/users/LL-WHUT/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self">
+        <img src="https://avatars.githubusercontent.com/u/124682160?s=64&amp;v=4" alt="@LL-WHUT" size="32" height="32" width="32" data-view-component="true" class="avatar circle">
+</a>
 
 ## 免责声明
 
