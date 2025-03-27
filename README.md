@@ -12,7 +12,7 @@
 
 ## 如何下载
 
-✅使用GitZip下载单个子文件夹 📁GitZip
+✅使用GitZip下载单个子文件夹 📁GitZip https://kinolien.github.io/gitzip/
 
 ✅clone 整个项目
 
